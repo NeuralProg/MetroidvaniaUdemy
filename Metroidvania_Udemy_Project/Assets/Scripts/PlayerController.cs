@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private float moveInput;
+    [SerializeField] private SpriteRenderer sr;
 
     // Movements vars
     private bool canMove = true;
@@ -17,7 +18,6 @@ public class PlayerController : MonoBehaviour
     private float jumpForce = 20;
     private bool canDoubleJump;
     private bool jumping = false;
-    private bool falling = false;
     private bool willLand = false;
     private float dashSpeed = 25;
     private float dashTime = 0.2f;
@@ -37,6 +37,13 @@ public class PlayerController : MonoBehaviour
     public BulletController shotToFire;
     public UnityEngine.Transform shotPointFront;
     public UnityEngine.Transform shotPointTop;
+
+    [Header("DashTrailEffect")]
+    public SpriteRenderer dashAfterImage;
+    public Color afterImageColor;
+    private float afterImageLifeTime = 0.1f;
+    private float timeBetweenAfterImages = (1/30);
+    private float afterImageCounter;
     #endregion
 
 
@@ -77,17 +84,8 @@ public class PlayerController : MonoBehaviour
             canDoubleJump = true;
             dashReset = true;
         }
-        if (rb.velocity.y < 0f)   // Check if player is falling
-        {
-            jumping = false;
-            falling = true; 
-        }
-        else
-        {
-            falling = false;
-        }
 
-        if(rb.velocity.y < -(jumpForce-1))    // Check if the player will spawn particles at landing
+        if(rb.velocity.y < -(jumpForce+1))    // Check if the player will spawn particles at landing
         {
             willLand = true;
         }
@@ -95,6 +93,11 @@ public class PlayerController : MonoBehaviour
         {
             willLand = false;
             Instantiate(landEffect, groundPoint.transform.position, Quaternion.identity);
+        }
+
+        if(Mathf.Abs(rb.velocity.y) > 30)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, (rb.velocity.y / Mathf.Abs(rb.velocity.y)) * 30);
         }
 
         anim.SetBool("IsGrounded", isOnGround);
@@ -145,6 +148,12 @@ public class PlayerController : MonoBehaviour
                 canDoubleJump = false;
                 jumping = true;
             }
+
+            if (rb.velocity.y < 0f)   // Check if player is falling
+            {
+                jumping = false;
+            }
+
             if (UserInput.instance.controls.Jumping.Jump.WasReleasedThisFrame() && jumping)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce / 4);
@@ -181,6 +190,7 @@ public class PlayerController : MonoBehaviour
             dashReset = false;
             canDash = false;
             rb.gravityScale = 0f;
+            ShowAfterImage();
         }
 
         if(dashCooldown > 0)
@@ -188,7 +198,13 @@ public class PlayerController : MonoBehaviour
 
         if(dashCounter > dashCooldown)  // If the player is dashing
         {
-            rb.velocity = new Vector2(dashSpeed * transform.localScale.x, rb.velocity.y);
+            rb.velocity = new Vector2(dashSpeed * transform.localScale.x, 0f);
+
+            afterImageCounter -= Time.deltaTime;
+            if(afterImageCounter <= 0)
+            {
+                ShowAfterImage();
+            }
         }
         else 
         {
@@ -200,6 +216,23 @@ public class PlayerController : MonoBehaviour
             canDash = true;
         else
             canDash = false;
+    }
+
+    #endregion
+
+
+    #region Functions
+
+    private void ShowAfterImage()
+    {
+        SpriteRenderer img = Instantiate(dashAfterImage, transform.position, transform.rotation);
+        img.sprite = sr.sprite;
+        img.transform.localScale = transform.localScale;
+        img.color = afterImageColor;
+
+        Destroy(img.gameObject, afterImageLifeTime); // Destroy gameObject after a certain amount of time
+
+        afterImageCounter = timeBetweenAfterImages;
     }
 
     #endregion
