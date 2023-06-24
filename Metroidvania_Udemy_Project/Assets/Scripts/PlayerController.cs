@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     // Movements vars
     private float moveSpeed = 8;
     private float jumpForce = 20;
+    private bool canDoubleJump;
     private bool jumping = false;
     private bool falling = false;
     private bool willLand = false;
@@ -50,13 +51,17 @@ public class PlayerController : MonoBehaviour
         Jump();  // Check GROUND and JUMP
         Shoot(); // SHOOT
 
+        if (isOnGround)
+        {
+            canDoubleJump = true;
+        }
 
         if (rb.velocity.y < 0f)   // Check if player is falling
         {
             jumping = false;
         }
 
-        if(rb.velocity.y < -15f)    // Check if the player will spawn particles at landing
+        if(rb.velocity.y < -(jumpForce-1))    // Check if the player will spawn particles at landing
         {
             willLand = true;
         }
@@ -104,6 +109,13 @@ public class PlayerController : MonoBehaviour
         if(UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && isOnGround)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            jumping = true;
+        }
+        else if(UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && !isOnGround && canDoubleJump)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            anim.SetTrigger("DoubleJump");
+            canDoubleJump = false;
             jumping = true;
         }
         if(UserInput.instance.controls.Jumping.Jump.WasReleasedThisFrame() && jumping)
