@@ -6,11 +6,13 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public class PlayerController : MonoBehaviour
 {
     #region Variables
-    // Components vars
+    [Header("References")]
     private Rigidbody2D rb;
     private Animator anim;
     private float moveInput;
     [SerializeField] private SpriteRenderer sr;
+    [SerializeField] private Animator animStand;
+    [SerializeField] private Animator animBall;
 
     // Movements vars
     private bool canMove = true;
@@ -27,8 +29,9 @@ public class PlayerController : MonoBehaviour
     private bool dashReset;
     private bool canDash;
 
-    [Header("GroundCheck")]
+    [Header("CollisionCheck")]
     public UnityEngine.Transform groundPoint;
+    public UnityEngine.Transform aboveCheck;
     public LayerMask groundMask;
     public GameObject landEffect;
     private bool isOnGround;
@@ -44,6 +47,11 @@ public class PlayerController : MonoBehaviour
     private float afterImageLifeTime = 0.1f;
     private float timeBetweenAfterImages = (1/30);
     private float afterImageCounter;
+
+    [Header("State")]
+    [SerializeField] private GameObject standing;
+    [SerializeField] private GameObject ball;
+    private float waitToBall = 1f, ballCounter;
     #endregion
 
 
@@ -52,7 +60,11 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        anim = gameObject.GetComponentInChildren<Animator>();
+
+        if (standing.activeSelf)
+            anim = animStand;
+        else if (ball.activeSelf)
+            anim = animBall;
     }
 
     void Start()
@@ -68,6 +80,7 @@ public class PlayerController : MonoBehaviour
             Jump();  // Check GROUND and JUMP
             Shoot(); // SHOOT
             Dash();  // DASH
+            CheckState();
         }
         else
         {
@@ -75,6 +88,11 @@ public class PlayerController : MonoBehaviour
             dashing = false;
             dashCounter = 0;
         }
+
+        if (standing.activeSelf)
+            anim = animStand;
+        else if (ball.activeSelf)
+            anim = animBall;
 
         // Check Ground
         isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.2f, groundMask);
@@ -164,7 +182,7 @@ public class PlayerController : MonoBehaviour
 
     private void Shoot()
     {
-        if (!dashing)
+        if (!dashing && !ball.activeSelf)
         {
             // Shoot
             if (UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && UserInput.instance.moveInput.y > 0 && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f)
@@ -183,7 +201,7 @@ public class PlayerController : MonoBehaviour
     private void Dash()
     {
         // Dash
-        if(UserInput.instance.controls.Dashing.Dash.WasPressedThisFrame() && canDash)
+        if(UserInput.instance.controls.Dashing.Dash.WasPressedThisFrame() && canDash && standing.activeSelf)
         {
             dashCounter = dashTime + dashCooldown;   // Set the dash timer
             dashing = true;
@@ -233,6 +251,52 @@ public class PlayerController : MonoBehaviour
         Destroy(img.gameObject, afterImageLifeTime); // Destroy gameObject after a certain amount of time
 
         afterImageCounter = timeBetweenAfterImages;
+    }
+
+    private void CheckState()
+    {
+        if (!ball.activeSelf)
+        {
+            if(UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f)     // We check if the player push the direction down
+            {
+                ballCounter -= Time.deltaTime;
+
+                if(ballCounter <= 0)            // If the player pressed the button for waitToBall duration
+                {
+                    ball.SetActive(true);
+                    standing.SetActive(false);
+                    ballCounter = waitToBall;
+                }
+
+                anim.SetBool("SwitchingToBall", true);
+            }
+            else
+            {
+                ballCounter = waitToBall;
+                anim.SetBool("SwitchingToBall", false);
+            }
+        }
+        else
+        {
+            if (UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && !Physics2D.OverlapBox(aboveCheck.transform.position, new Vector2(0.9f, 1.6f), 0f, groundMask))     // We check if the player push the direction down
+            {
+                ballCounter -= Time.deltaTime;
+
+                if (ballCounter <= 0)            // If the player pressed the button for waitToBall duration
+                {
+                    ball.SetActive(false);
+                    standing.SetActive(true);
+                    ballCounter = waitToBall;
+                }
+
+                anim.SetBool("SwitchingToStand", true);
+            }
+            else
+            {
+                ballCounter = waitToBall;
+                anim.SetBool("SwitchingToStand", false);
+            }
+        }
     }
 
     #endregion

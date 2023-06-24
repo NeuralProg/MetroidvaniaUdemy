@@ -376,6 +376,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "SwitchingState",
+            "id": "c406d234-bd3b-4332-9d38-cba3100b1cf7",
+            "actions": [
+                {
+                    "name": "Switch",
+                    "type": "PassThrough",
+                    "id": "9517869a-cb70-4038-976a-a06cfda1aef3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "294d77ac-283a-4673-a7f3-cc767a1cc89c",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Switch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "474b5390-f97c-4bbb-a7cd-adb4beccef80",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Switch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

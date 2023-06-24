@@ -398,6 +398,45 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SwitchingState"",
+            ""id"": ""c406d234-bd3b-4332-9d38-cba3100b1cf7"",
+            ""actions"": [
+                {
+                    ""name"": ""Switch"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""9517869a-cb70-4038-976a-a06cfda1aef3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""294d77ac-283a-4673-a7f3-cc767a1cc89c"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""474b5390-f97c-4bbb-a7cd-adb4beccef80"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -425,6 +464,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Dashing
         m_Dashing = asset.FindActionMap("Dashing", throwIfNotFound: true);
         m_Dashing_Dash = m_Dashing.FindAction("Dash", throwIfNotFound: true);
+        // SwitchingState
+        m_SwitchingState = asset.FindActionMap("SwitchingState", throwIfNotFound: true);
+        m_SwitchingState_Switch = m_SwitchingState.FindAction("Switch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -666,6 +708,52 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public DashingActions @Dashing => new DashingActions(this);
+
+    // SwitchingState
+    private readonly InputActionMap m_SwitchingState;
+    private List<ISwitchingStateActions> m_SwitchingStateActionsCallbackInterfaces = new List<ISwitchingStateActions>();
+    private readonly InputAction m_SwitchingState_Switch;
+    public struct SwitchingStateActions
+    {
+        private @Controls m_Wrapper;
+        public SwitchingStateActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Switch => m_Wrapper.m_SwitchingState_Switch;
+        public InputActionMap Get() { return m_Wrapper.m_SwitchingState; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SwitchingStateActions set) { return set.Get(); }
+        public void AddCallbacks(ISwitchingStateActions instance)
+        {
+            if (instance == null || m_Wrapper.m_SwitchingStateActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SwitchingStateActionsCallbackInterfaces.Add(instance);
+            @Switch.started += instance.OnSwitch;
+            @Switch.performed += instance.OnSwitch;
+            @Switch.canceled += instance.OnSwitch;
+        }
+
+        private void UnregisterCallbacks(ISwitchingStateActions instance)
+        {
+            @Switch.started -= instance.OnSwitch;
+            @Switch.performed -= instance.OnSwitch;
+            @Switch.canceled -= instance.OnSwitch;
+        }
+
+        public void RemoveCallbacks(ISwitchingStateActions instance)
+        {
+            if (m_Wrapper.m_SwitchingStateActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ISwitchingStateActions instance)
+        {
+            foreach (var item in m_Wrapper.m_SwitchingStateActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_SwitchingStateActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public SwitchingStateActions @SwitchingState => new SwitchingStateActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -699,5 +787,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IDashingActions
     {
         void OnDash(InputAction.CallbackContext context);
+    }
+    public interface ISwitchingStateActions
+    {
+        void OnSwitch(InputAction.CallbackContext context);
     }
 }
