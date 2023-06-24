@@ -327,12 +327,73 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""9d0def22-0b0c-4fb8-ad93-275550d3aefc"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""164cbc76-b9dd-4771-a0d0-c68e08e148e7"",
                     ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Dashing"",
+            ""id"": ""1f71a48f-7586-4797-bde4-76a2f837085b"",
+            ""actions"": [
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""6d416624-a8b3-43a4-afc5-c8ad542b829e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""64d3f6eb-10de-43dc-ab52-82ea315f3250"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a1726df-e6c4-404b-9cb8-0e09997fe921"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bfb8fd44-3fe6-4419-b58b-f9206c655556"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -361,6 +422,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Shooting
         m_Shooting = asset.FindActionMap("Shooting", throwIfNotFound: true);
         m_Shooting_Shoot = m_Shooting.FindAction("Shoot", throwIfNotFound: true);
+        // Dashing
+        m_Dashing = asset.FindActionMap("Dashing", throwIfNotFound: true);
+        m_Dashing_Dash = m_Dashing.FindAction("Dash", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -556,6 +620,52 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public ShootingActions @Shooting => new ShootingActions(this);
+
+    // Dashing
+    private readonly InputActionMap m_Dashing;
+    private List<IDashingActions> m_DashingActionsCallbackInterfaces = new List<IDashingActions>();
+    private readonly InputAction m_Dashing_Dash;
+    public struct DashingActions
+    {
+        private @Controls m_Wrapper;
+        public DashingActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Dash => m_Wrapper.m_Dashing_Dash;
+        public InputActionMap Get() { return m_Wrapper.m_Dashing; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DashingActions set) { return set.Get(); }
+        public void AddCallbacks(IDashingActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DashingActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DashingActionsCallbackInterfaces.Add(instance);
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
+        }
+
+        private void UnregisterCallbacks(IDashingActions instance)
+        {
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
+        }
+
+        public void RemoveCallbacks(IDashingActions instance)
+        {
+            if (m_Wrapper.m_DashingActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDashingActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DashingActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DashingActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DashingActions @Dashing => new DashingActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -585,5 +695,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IShootingActions
     {
         void OnShoot(InputAction.CallbackContext context);
+    }
+    public interface IDashingActions
+    {
+        void OnDash(InputAction.CallbackContext context);
     }
 }
