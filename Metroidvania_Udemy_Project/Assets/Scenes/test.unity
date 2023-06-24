@@ -197,6 +197,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  landEffect: {fileID: 7301545412307311522, guid: 99173d6ed56184ec4a43894cc0126c8b, type: 3}
   shotToFire: {fileID: 3346251669571363100, guid: 9b5f1a3fa0fa34e708dcb504fa47f891, type: 3}
   shotPointFront: {fileID: 1599405214}
   shotPointTop: {fileID: 2063480973}

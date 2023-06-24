@@ -5,24 +5,33 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerController : MonoBehaviour
 {
-
+    #region Variables
+    // Components vars
     private Rigidbody2D rb;
     private Animator anim;
     private float moveInput;
 
+    // Movements vars
     private float moveSpeed = 8;
     private float jumpForce = 20;
+    private bool jumping = false;
+    private bool falling = false;
+    private bool willLand = false;
 
-    [Header("Checks")]
+    [Header("GroundCheck")]
     public UnityEngine.Transform groundPoint;
     public LayerMask groundMask;
+    public GameObject landEffect;
     private bool isOnGround;
 
     [Header("Shoot")]
     public BulletController shotToFire;
     public UnityEngine.Transform shotPointFront;
     public UnityEngine.Transform shotPointTop;
+    #endregion
 
+
+    #region Default Functions
 
     private void Awake()
     {
@@ -30,44 +39,41 @@ public class PlayerController : MonoBehaviour
         anim = gameObject.GetComponentInChildren<Animator>();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Move();
+        Move();  // MOVE left to right and FLIP character
+        Jump();  // Check GROUND and JUMP
+        Shoot(); // SHOOT
 
-        // Check Ground
-        isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.2f, groundMask);
 
-        // Jump
-        if(Input.GetButtonDown("Jump") && isOnGround)
+        if (rb.velocity.y < 0f)   // Check if player is falling
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            jumping = false;
         }
 
-
-        // Shoot
-        if (Input.GetButtonDown("Shoot") && Input.GetKey(KeyCode.Z) && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f)
+        if(rb.velocity.y < -15f)    // Check if the player will spawn particles at landing
         {
-            Instantiate(shotToFire, shotPointTop.position, shotPointTop.rotation).moveDir = new Vector2(0f, 1f);
-            anim.SetTrigger("ShotFiredUp");
+            willLand = true;
         }
-        else if (Input.GetButtonDown("Shoot"))
+        if(isOnGround && willLand)
         {
-            Instantiate(shotToFire, shotPointFront.position, shotPointFront.rotation).moveDir = new Vector2(transform.localScale.x, 0f);
-            anim.SetTrigger("ShotFiredFront");
+            willLand = false;
+            Instantiate(landEffect, groundPoint.transform.position, Quaternion.identity);
         }
-
 
         anim.SetBool("IsGrounded", isOnGround);
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
     }
 
+    #endregion
+
+
+    #region Movements
 
     private void Move()
     {
@@ -88,4 +94,39 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
+    private void Jump()
+    {
+        // Check Ground
+        isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.2f, groundMask);
+
+        // Jump
+        if(UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && isOnGround)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            jumping = true;
+        }
+        if(UserInput.instance.controls.Jumping.Jump.WasReleasedThisFrame() && jumping)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce/4);
+            jumping = false;
+        }
+    }
+
+    private void Shoot()
+    {
+        // Shoot
+        if(UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && UserInput.instance.moveInput.y > 0 && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f)
+        {
+            Instantiate(shotToFire, shotPointTop.position, shotPointTop.rotation).moveDir = new Vector2(0f, 1f);
+            anim.SetTrigger("ShotFiredUp");
+        }
+        else if(UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame())
+        {
+            Instantiate(shotToFire, shotPointFront.position, shotPointFront.rotation).moveDir = new Vector2(transform.localScale.x, 0f);
+            anim.SetTrigger("ShotFiredFront");
+        }
+    }
+
+    #endregion
 }

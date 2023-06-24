@@ -259,6 +259,84 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Jumping"",
+            ""id"": ""9d25718b-5b9a-4657-8b1b-a8ff5f3e81ba"",
+            ""actions"": [
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""df75bb9e-939b-4625-b017-40199fd6359b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""38bc99ec-ca99-4cd9-8212-9c014eafca7f"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb0e2424-026b-4fa9-ad0f-dae940ac17fe"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Shooting"",
+            ""id"": ""d66e0963-9f80-44fd-8aac-bca137238bc4"",
+            ""actions"": [
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""efddc113-f814-4fca-aa06-829729b9e22d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""958562bb-def5-4ac5-8e7e-337d616b3ec1"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""164cbc76-b9dd-4771-a0d0-c68e08e148e7"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -277,6 +355,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
+        // Jumping
+        m_Jumping = asset.FindActionMap("Jumping", throwIfNotFound: true);
+        m_Jumping_Jump = m_Jumping.FindAction("Jump", throwIfNotFound: true);
+        // Shooting
+        m_Shooting = asset.FindActionMap("Shooting", throwIfNotFound: true);
+        m_Shooting_Shoot = m_Shooting.FindAction("Shoot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -380,6 +464,98 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public MovementActions @Movement => new MovementActions(this);
+
+    // Jumping
+    private readonly InputActionMap m_Jumping;
+    private List<IJumpingActions> m_JumpingActionsCallbackInterfaces = new List<IJumpingActions>();
+    private readonly InputAction m_Jumping_Jump;
+    public struct JumpingActions
+    {
+        private @Controls m_Wrapper;
+        public JumpingActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Jump => m_Wrapper.m_Jumping_Jump;
+        public InputActionMap Get() { return m_Wrapper.m_Jumping; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(JumpingActions set) { return set.Get(); }
+        public void AddCallbacks(IJumpingActions instance)
+        {
+            if (instance == null || m_Wrapper.m_JumpingActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_JumpingActionsCallbackInterfaces.Add(instance);
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+        }
+
+        private void UnregisterCallbacks(IJumpingActions instance)
+        {
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+        }
+
+        public void RemoveCallbacks(IJumpingActions instance)
+        {
+            if (m_Wrapper.m_JumpingActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IJumpingActions instance)
+        {
+            foreach (var item in m_Wrapper.m_JumpingActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_JumpingActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public JumpingActions @Jumping => new JumpingActions(this);
+
+    // Shooting
+    private readonly InputActionMap m_Shooting;
+    private List<IShootingActions> m_ShootingActionsCallbackInterfaces = new List<IShootingActions>();
+    private readonly InputAction m_Shooting_Shoot;
+    public struct ShootingActions
+    {
+        private @Controls m_Wrapper;
+        public ShootingActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Shoot => m_Wrapper.m_Shooting_Shoot;
+        public InputActionMap Get() { return m_Wrapper.m_Shooting; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ShootingActions set) { return set.Get(); }
+        public void AddCallbacks(IShootingActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ShootingActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ShootingActionsCallbackInterfaces.Add(instance);
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+        }
+
+        private void UnregisterCallbacks(IShootingActions instance)
+        {
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+        }
+
+        public void RemoveCallbacks(IShootingActions instance)
+        {
+            if (m_Wrapper.m_ShootingActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IShootingActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ShootingActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ShootingActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ShootingActions @Shooting => new ShootingActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -401,5 +577,13 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
+    }
+    public interface IJumpingActions
+    {
+        void OnJump(InputAction.CallbackContext context);
+    }
+    public interface IShootingActions
+    {
+        void OnShoot(InputAction.CallbackContext context);
     }
 }
