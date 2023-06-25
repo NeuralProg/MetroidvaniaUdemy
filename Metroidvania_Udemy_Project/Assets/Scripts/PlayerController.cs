@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private Animator animStand;
     [SerializeField] private Animator animBall;
+    private PlayerAbilityTracker abilities;
     private Rigidbody2D rb;
     private Animator anim;
     private float moveInput;
@@ -27,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private float dashCounter;
     private bool dashing = false;
     private bool dashReset;
-    private bool canDash;
+    private bool canDash = false;
 
     [Header("CollisionCheck")]
     [SerializeField] private UnityEngine.Transform groundPoint;
@@ -75,6 +76,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        abilities = GetComponent<PlayerAbilityTracker>();
 
         if (standing.activeSelf)
             anim = animStand;
@@ -169,7 +171,7 @@ public class PlayerController : MonoBehaviour
                     rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                     jumping = true;
                 }
-                else if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && !isOnGround && canDoubleJump)
+                else if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && !isOnGround && canDoubleJump && abilities.doubleJumpAbility)
                 {
                     rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                     anim.SetTrigger("DoubleJump");
@@ -198,13 +200,13 @@ public class PlayerController : MonoBehaviour
                     Instantiate(landEffect, groundPoint.transform.position, Quaternion.identity);
                 }
             }
-            else if(!onWall && Physics2D.OverlapBox(wallPointBack.position, new Vector2(1f, 1.35f), 0f, wallMask) && UserInput.instance.controls.Jumping.Jump.IsPressed() && wasWalledCounter > 0)
+            else if(!onWall && Physics2D.OverlapBox(wallPointBack.position, new Vector2(1f, 1.35f), 0f, wallMask) && UserInput.instance.controls.Jumping.Jump.IsPressed() && wasWalledCounter > 0 && abilities.wallJumpAbility)
             {
                 // Jump forward
                 rb.velocity = new Vector2(transform.localScale.x * jumpForce/3, jumpForce/2);
                 jumping = true;
             }
-            else if (onWall && UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame())
+            else if (onWall && UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && abilities.wallJumpAbility)
             {
                 // Jump to opposite
                 transform.localScale = new Vector3(-transform.localScale.x, 1f, 1f);
@@ -241,12 +243,12 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (shootCounter < 0 && ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && UserInput.instance.moveInput.y > 0 && isOnGround)
+            if (shootCounter < 0 && ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && UserInput.instance.moveInput.y > 0 && isOnGround && abilities.bombAbility)
             {
                 Instantiate(bombObject, bombPointUp.position, bombPointUp.rotation);
                 shootCounter = shootCooldown * 5;
             }
-            else if (shootCounter < 0 &&ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame())
+            else if (shootCounter < 0 &&ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && abilities.bombAbility)
             {
                 Instantiate(bombObject, bombPointFront.position, bombPointFront.rotation);
                 shootCounter = shootCooldown * 5;
@@ -286,7 +288,7 @@ public class PlayerController : MonoBehaviour
             rb.gravityScale = 5f;
         }
 
-        if (dashReset && dashCounter <= 0)
+        if (dashReset && dashCounter <= 0 && abilities.dashAbility)
             canDash = true;
         else
             canDash = false;
@@ -296,7 +298,7 @@ public class PlayerController : MonoBehaviour
     {
         if(Physics2D.OverlapBox(wallPoint.position, new Vector2(0.8f, 1.35f), 0f, wallMask) && (UserInput.instance.moveInput[0] > 0.9f && transform.localScale.x == 1 || UserInput.instance.moveInput[0] < -0.9f && transform.localScale.x == -1))
         {
-            if (!isOnGround)
+            if (!isOnGround && abilities.wallJumpAbility && !ball.activeSelf)
             {
                 onWall = true;
                 wasWalledCounter = wasWalledCooldown;
@@ -340,7 +342,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!ball.activeSelf)
         {
-            if(UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f)     // We check if the player push the direction down
+            if(UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && abilities.ballAbility)     // We check if the player push the direction down
             {
                 ballCounter -= Time.deltaTime;
 
@@ -361,7 +363,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && !Physics2D.OverlapBox(aboveCheck.transform.position, new Vector2(0.9f, 1.6f), 0f, groundMask))     // We check if the player push the direction down
+            if (UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && !Physics2D.OverlapBox(aboveCheck.transform.position, new Vector2(0.9f, 1.6f), 0f, groundMask) && abilities.ballAbility)     // We check if the player push the direction down
             {
                 ballCounter -= Time.deltaTime;
 
