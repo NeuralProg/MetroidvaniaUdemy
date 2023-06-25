@@ -30,17 +30,20 @@ public class PlayerController : MonoBehaviour
     private bool canDash;
 
     [Header("CollisionCheck")]
-    public UnityEngine.Transform groundPoint;
-    public UnityEngine.Transform aboveCheck;
-    public LayerMask groundMask;
-    public GameObject landEffect;
+    [SerializeField] private UnityEngine.Transform groundPoint;
+    [SerializeField] private UnityEngine.Transform aboveCheck;
+    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private GameObject landEffect;
     private bool isOnGround;
+    [SerializeField] private UnityEngine.Transform wallPoint;
+    [SerializeField] private LayerMask wallMask;
+    private bool onWall;
 
     [Header("Shoot")]
     public BulletController shotToFire;
     public UnityEngine.Transform shotPointFront;
     public UnityEngine.Transform shotPointTop;
-    private float shootCooldown = 0.3f; // To modify .......................................................
+    private float shootCooldown = 0.3f; 
     private float shootCounter;
 
     [Header("DashTrailEffect")]
@@ -87,6 +90,7 @@ public class PlayerController : MonoBehaviour
             Jump();  // Check GROUND and JUMP
             Shoot(); // SHOOT
             Dash();  // DASH
+            Wall();
             CheckState();
         }
         else
@@ -264,6 +268,26 @@ public class PlayerController : MonoBehaviour
             canDash = true;
         else
             canDash = false;
+    }
+
+    private void Wall()
+    {
+        if(Physics2D.OverlapBox(wallPoint.position, new Vector2(0.8f, 1.35f), 0f, wallMask) && (UserInput.instance.moveInput[0] > 0.9f && transform.localScale.x == 1 || UserInput.instance.moveInput[0] < -0.9f && transform.localScale.x == -1))
+        {
+            if (!isOnGround)
+                onWall = true;
+            else
+                onWall = false;
+        }
+        else
+        {
+            onWall= false;
+        }
+
+        if(onWall)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y / 1.5f);
+        }
     }
 
     #endregion
