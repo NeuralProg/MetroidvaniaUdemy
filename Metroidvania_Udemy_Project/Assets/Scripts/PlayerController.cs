@@ -39,6 +39,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private UnityEngine.Transform wallPointBack;
     [SerializeField] private LayerMask wallMask;
     private bool onWall;
+    private bool wallJump = false;
+    private float wallJumpDuration = 0.1f;
     private float wasWalledCounter;
     private float wasWalledCooldown = 0.2f;
 
@@ -138,7 +140,10 @@ public class PlayerController : MonoBehaviour
             moveInput = UserInput.instance.moveInput.x;
 
             // Move sideways
-            rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+            if(!wallJump)
+                rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+            else
+                rb.velocity = new Vector2((moveInput * moveSpeed / 2) + transform.localScale.x * jumpForce / 1.5f, jumpForce / 2);
 
             // Flip
             if (rb.velocity.x < 0)
@@ -202,10 +207,8 @@ public class PlayerController : MonoBehaviour
             else if (onWall && UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame())
             {
                 // Jump to opposite
-                print("Jump Opposite");
                 transform.localScale = new Vector3(-transform.localScale.x, 1f, 1f);
-                rb.velocity = new Vector2(transform.localScale.x * 500f, jumpForce);    // To fix
-                jumping = true;
+                StartCoroutine(WallJump());
             }
         }
     }
@@ -377,6 +380,13 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("SwitchingToStand", false);
             }
         }
+    }
+
+    private IEnumerator WallJump()
+    {
+        wallJump = true;
+        yield return new WaitForSeconds(wallJumpDuration);
+        wallJump = false;
     }
 
     #endregion
