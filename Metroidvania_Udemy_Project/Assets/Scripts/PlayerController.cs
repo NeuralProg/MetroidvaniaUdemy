@@ -198,10 +198,10 @@ public class PlayerController : MonoBehaviour
                     Instantiate(landEffect, groundPoint.transform.position, Quaternion.identity);
                 }
             }
-            else if(!onWall && Physics2D.OverlapBox(wallPointBack.position, new Vector2(1f, 1.35f), 0f, wallMask) && UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && wasWalledCounter > 0)
+            else if(!onWall && Physics2D.OverlapBox(wallPointBack.position, new Vector2(1f, 1.35f), 0f, wallMask) && UserInput.instance.controls.Jumping.Jump.IsPressed() && wasWalledCounter > 0)
             {
                 // Jump forward
-                rb.velocity = new Vector2(transform.localScale.x * 10f, jumpForce);
+                rb.velocity = new Vector2(transform.localScale.x * jumpForce/3, jumpForce/2);
                 jumping = true;
             }
             else if (onWall && UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame())
