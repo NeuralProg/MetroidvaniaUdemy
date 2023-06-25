@@ -7,12 +7,12 @@ public class PlayerController : MonoBehaviour
 {
     #region Variables
     [Header("References")]
-    private Rigidbody2D rb;
-    private Animator anim;
-    private float moveInput;
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private Animator animStand;
     [SerializeField] private Animator animBall;
+    private Rigidbody2D rb;
+    private Animator anim;
+    private float moveInput;
 
     // Movements vars
     private bool canMove = true;
@@ -36,19 +36,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject landEffect;
     private bool isOnGround;
     [SerializeField] private UnityEngine.Transform wallPoint;
+    [SerializeField] private UnityEngine.Transform wallPointBack;
     [SerializeField] private LayerMask wallMask;
     private bool onWall;
+    private float wasWalledCounter;
+    private float wasWalledCooldown = 0.2f;
 
     [Header("Shoot")]
-    public BulletController shotToFire;
-    public UnityEngine.Transform shotPointFront;
-    public UnityEngine.Transform shotPointTop;
+    [SerializeField] private BulletController shotToFire;
+    [SerializeField] private UnityEngine.Transform shotPointFront;
+    [SerializeField] private UnityEngine.Transform shotPointTop;
     private float shootCooldown = 0.3f; 
     private float shootCounter;
 
     [Header("DashTrailEffect")]
-    public SpriteRenderer dashAfterImage;
-    public Color afterImageColor;
+    [SerializeField] private SpriteRenderer dashAfterImage;
+    [SerializeField] private Color afterImageColor;
     private float afterImageLifeTime = 0.1f;
     private float timeBetweenAfterImages = (1/30);
     private float afterImageCounter;
@@ -107,21 +110,10 @@ public class PlayerController : MonoBehaviour
 
         // Check Ground
         isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.35f, groundMask);
-
-        if (isOnGround)
+        if (isOnGround || onWall)
         {
             canDoubleJump = true;
             dashReset = true;
-        }
-
-        if(rb.velocity.y < -(jumpForce+1))    // Check if the player will spawn particles at landing
-        {
-            willLand = true;
-        }
-        if(isOnGround && willLand)
-        {
-            willLand = false;
-            Instantiate(landEffect, groundPoint.transform.position, Quaternion.identity);
         }
 
         if(Mathf.Abs(rb.velocity.y) > 30)
@@ -164,29 +156,53 @@ public class PlayerController : MonoBehaviour
     {
         if (!dashing)
         {
-            // Jump
-            if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && isOnGround)
+            if (!onWall && !Physics2D.OverlapBox(wallPointBack.position, new Vector2(0.8f, 1.35f), 0f, wallMask))
             {
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-                jumping = true;
-            }
-            else if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && !isOnGround && canDoubleJump)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-                anim.SetTrigger("DoubleJump");
-                canDoubleJump = false;
-                jumping = true;
-            }
+                // Jump
+                if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && isOnGround)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                    jumping = true;
+                }
+                else if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && !isOnGround && canDoubleJump)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                    anim.SetTrigger("DoubleJump");
+                    canDoubleJump = false;
+                    jumping = true;
+                }
 
-            if (rb.velocity.y < 0f)   // Check if player is falling
-            {
-                jumping = false;
-            }
+                if (rb.velocity.y < 0f)   // Check if player is falling
+                {
+                    jumping = false;
+                }
 
-            if (UserInput.instance.controls.Jumping.Jump.WasReleasedThisFrame() && jumping)
+                if (UserInput.instance.controls.Jumping.Jump.WasReleasedThisFrame() && jumping)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, jumpForce / 4);
+                    jumping = false;
+                }
+
+                if (rb.velocity.y < -(jumpForce + 1))    // Check if the player will spawn particles at landing
+                {
+                    willLand = true;
+                }
+                if (isOnGround && willLand)
+                {
+                    willLand = false;
+                    Instantiate(landEffect, groundPoint.transform.position, Quaternion.identity);
+                }
+            }
+            else if(!onWall && Physics2D.OverlapBox(wallPointBack.position, new Vector2(0.8f, 1.35f), 0f, wallMask) && UserInput.instance.controls.Jumping.Jump.IsPressed() && wasWalledCounter > 0)
             {
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce / 4);
-                jumping = false;
+                // Jump forward
+                print("Jump Forward");
+                rb.velocity = new Vector2(transform.localScale.x * 100f, rb.velocity.y);
+            }
+            else if (onWall && UserInput.instance.controls.Jumping.Jump.IsPressed())
+            {
+                // Jump to opposite
+                print("Jump Opposite");
             }
         }
     }
@@ -275,7 +291,10 @@ public class PlayerController : MonoBehaviour
         if(Physics2D.OverlapBox(wallPoint.position, new Vector2(0.8f, 1.35f), 0f, wallMask) && (UserInput.instance.moveInput[0] > 0.9f && transform.localScale.x == 1 || UserInput.instance.moveInput[0] < -0.9f && transform.localScale.x == -1))
         {
             if (!isOnGround)
+            {
                 onWall = true;
+                wasWalledCounter = wasWalledCooldown;
+            }
             else
                 onWall = false;
         }
@@ -287,6 +306,10 @@ public class PlayerController : MonoBehaviour
         if(onWall)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y / 1.5f);
+        }
+        else if(wasWalledCounter >= 0)
+        {
+            wasWalledCounter -= Time.deltaTime;
         }
     }
 
