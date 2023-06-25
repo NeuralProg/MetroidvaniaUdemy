@@ -14,7 +14,7 @@ public class BombController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-        rb.velocity = new Vector2(5f, rb.velocity.y);
+        rb.velocity = new Vector2(rb.velocity.x, 5f);
     }
 
     void Update()

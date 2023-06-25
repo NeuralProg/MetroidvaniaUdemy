@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour
             anim = animBall;
 
         // Check Ground
-        isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.2f, groundMask);
+        isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.35f, groundMask);
 
         if (isOnGround)
         {
@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
 
         if (standing.activeSelf)
         {
-            if (!dashing && shootCounter < 0)
+            if (!dashing && shootCounter < 0 && !jumping)
             {
                 // Shoot
                 if (UserInput.instance.controls.Shooting.Shoot.IsPressed() && UserInput.instance.moveInput.y > 0 && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f)
@@ -218,12 +218,12 @@ public class PlayerController : MonoBehaviour
             if (shootCounter < 0 && ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && UserInput.instance.moveInput.y > 0 && isOnGround)
             {
                 Instantiate(bombObject, bombPointUp.position, bombPointUp.rotation);
-                shootCounter = shootCooldown * 3;
+                shootCounter = shootCooldown * 7;
             }
             else if (shootCounter < 0 &&ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame())
             {
                 Instantiate(bombObject, bombPointFront.position, bombPointFront.rotation);
-                shootCounter = shootCooldown * 3;
+                shootCounter = shootCooldown * 7;
             }
         }
     }
