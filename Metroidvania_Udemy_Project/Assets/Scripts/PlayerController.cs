@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask wallMask;
     private bool onWall;
     private bool wallJump = false;
-    private float wallJumpDuration = 0.1f;
+    private float wallJumpDuration = 0.15f;
     private float wasWalledCounter;
     private float wasWalledCooldown = 0.2f;
 
@@ -224,7 +224,7 @@ public class PlayerController : MonoBehaviour
 
         if (standing.activeSelf)
         {
-            if (!dashing && shootCounter < 0 && !jumping)
+            if (!dashing && shootCounter < 0)
             {
                 // Shoot
                 if (UserInput.instance.controls.Shooting.Shoot.IsPressed() && UserInput.instance.moveInput.y > 0 && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f)
@@ -233,7 +233,7 @@ public class PlayerController : MonoBehaviour
                     anim.SetTrigger("ShotFiredUp");
                     shootCounter = shootCooldown;
                 }
-                else if (UserInput.instance.controls.Shooting.Shoot.IsPressed())
+                else if (UserInput.instance.controls.Shooting.Shoot.IsPressed() && shootCounter < 0)
                 {
                     Instantiate(shotToFire, shotPointFront.position, shotPointFront.rotation).moveDir = new Vector2(transform.localScale.x, 0f);
                     anim.SetTrigger("ShotFiredFront");
@@ -246,12 +246,12 @@ public class PlayerController : MonoBehaviour
             if (shootCounter < 0 && ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && UserInput.instance.moveInput.y > 0 && isOnGround && abilities.bombAbility)
             {
                 Instantiate(bombObject, bombPointUp.position, bombPointUp.rotation);
-                shootCounter = shootCooldown * 5;
+                shootCounter = shootCooldown * 3;
             }
             else if (shootCounter < 0 &&ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && abilities.bombAbility)
             {
                 Instantiate(bombObject, bombPointFront.position, bombPointFront.rotation);
-                shootCounter = shootCooldown * 5;
+                shootCounter = shootCooldown * 3;
             }
         }
     }

@@ -1129,7 +1129,7 @@ GameObject:
   - component: {fileID: 1179227236}
   - component: {fileID: 1179227235}
   - component: {fileID: 1179227234}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: AbilityPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
