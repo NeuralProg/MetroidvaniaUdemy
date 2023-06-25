@@ -6,7 +6,7 @@ public class BombController : MonoBehaviour
 {
     private Rigidbody2D rb;
 
-    private float timeToExplode = 2f;
+    private float timeToExplode = 1f;
     [SerializeField] private GameObject explosion;
 
 
