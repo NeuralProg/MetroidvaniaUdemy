@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour
     public BulletController shotToFire;
     public UnityEngine.Transform shotPointFront;
     public UnityEngine.Transform shotPointTop;
+    private float shootCooldown = 0.3f; // To modify .......................................................
+    private float shootCounter;
 
     [Header("DashTrailEffect")]
     public SpriteRenderer dashAfterImage;
@@ -52,6 +54,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject standing;
     [SerializeField] private GameObject ball;
     private float waitToBall = 1f, ballCounter;
+
+    [Header("Bombs")]
+    [SerializeField] private GameObject bombObject;
+    [SerializeField] private UnityEngine.Transform bombPointFront;
+    [SerializeField] private UnityEngine.Transform bombPointUp;
     #endregion
 
 
@@ -182,18 +189,41 @@ public class PlayerController : MonoBehaviour
 
     private void Shoot()
     {
-        if (!dashing && !ball.activeSelf)
+        if (shootCounter >= 0)
         {
-            // Shoot
-            if (UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && UserInput.instance.moveInput.y > 0 && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f)
+            shootCounter -= Time.deltaTime;
+        }
+
+        if (standing.activeSelf)
+        {
+            if (!dashing && shootCounter < 0)
             {
-                Instantiate(shotToFire, shotPointTop.position, shotPointTop.rotation).moveDir = new Vector2(0f, 1f);
-                anim.SetTrigger("ShotFiredUp");
+                // Shoot
+                if (UserInput.instance.controls.Shooting.Shoot.IsPressed() && UserInput.instance.moveInput.y > 0 && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f)
+                {
+                    Instantiate(shotToFire, shotPointTop.position, shotPointTop.rotation).moveDir = new Vector2(0f, 1f);
+                    anim.SetTrigger("ShotFiredUp");
+                    shootCounter = shootCooldown;
+                }
+                else if (UserInput.instance.controls.Shooting.Shoot.IsPressed())
+                {
+                    Instantiate(shotToFire, shotPointFront.position, shotPointFront.rotation).moveDir = new Vector2(transform.localScale.x, 0f);
+                    anim.SetTrigger("ShotFiredFront");
+                    shootCounter = shootCooldown;
+                }
             }
-            else if (UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame())
+        }
+        else
+        {
+            if (shootCounter < 0 && ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && UserInput.instance.moveInput.y > 0 && isOnGround)
             {
-                Instantiate(shotToFire, shotPointFront.position, shotPointFront.rotation).moveDir = new Vector2(transform.localScale.x, 0f);
-                anim.SetTrigger("ShotFiredFront");
+                Instantiate(bombObject, bombPointUp.position, bombPointUp.rotation);
+                shootCounter = shootCooldown * 3;
+            }
+            else if (shootCounter < 0 &&ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame())
+            {
+                Instantiate(bombObject, bombPointFront.position, bombPointFront.rotation);
+                shootCounter = shootCooldown * 3;
             }
         }
     }

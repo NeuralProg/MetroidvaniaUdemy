@@ -14,7 +14,7 @@ TagManager:
   - Ground
   - Shot
   - Player
-  - 
+  - No collision with player
   - 
   - 
   - 
