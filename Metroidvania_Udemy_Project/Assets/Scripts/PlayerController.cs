@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private BulletController shotToFire;
     [SerializeField] private UnityEngine.Transform shotPointFront;
     [SerializeField] private UnityEngine.Transform shotPointTop;
-    private float shootCooldown = 0.3f; 
+    private float shootCooldown = 0.2f; 
     private float shootCounter;
 
     [Header("DashTrailEffect")]
@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!dashing)
         {
-            if (!onWall && !Physics2D.OverlapBox(wallPointBack.position, new Vector2(0.8f, 1.35f), 0f, wallMask))
+            if (!onWall && wasWalledCounter <= 0)
             {
                 // Jump
                 if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && isOnGround)
@@ -193,16 +193,19 @@ public class PlayerController : MonoBehaviour
                     Instantiate(landEffect, groundPoint.transform.position, Quaternion.identity);
                 }
             }
-            else if(!onWall && Physics2D.OverlapBox(wallPointBack.position, new Vector2(0.8f, 1.35f), 0f, wallMask) && UserInput.instance.controls.Jumping.Jump.IsPressed() && wasWalledCounter > 0)
+            else if(!onWall && Physics2D.OverlapBox(wallPointBack.position, new Vector2(1f, 1.35f), 0f, wallMask) && UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && wasWalledCounter > 0)
             {
                 // Jump forward
-                print("Jump Forward");
-                rb.velocity = new Vector2(transform.localScale.x * 100f, rb.velocity.y);
+                rb.velocity = new Vector2(transform.localScale.x * 10f, jumpForce);
+                jumping = true;
             }
-            else if (onWall && UserInput.instance.controls.Jumping.Jump.IsPressed())
+            else if (onWall && UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame())
             {
                 // Jump to opposite
                 print("Jump Opposite");
+                transform.localScale = new Vector3(-transform.localScale.x, 1f, 1f);
+                rb.velocity = new Vector2(transform.localScale.x * 500f, jumpForce);    // To fix
+                jumping = true;
             }
         }
     }
@@ -238,12 +241,12 @@ public class PlayerController : MonoBehaviour
             if (shootCounter < 0 && ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && UserInput.instance.moveInput.y > 0 && isOnGround)
             {
                 Instantiate(bombObject, bombPointUp.position, bombPointUp.rotation);
-                shootCounter = shootCooldown * 7;
+                shootCounter = shootCooldown * 5;
             }
             else if (shootCounter < 0 &&ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame())
             {
                 Instantiate(bombObject, bombPointFront.position, bombPointFront.rotation);
-                shootCounter = shootCooldown * 7;
+                shootCounter = shootCooldown * 5;
             }
         }
     }
