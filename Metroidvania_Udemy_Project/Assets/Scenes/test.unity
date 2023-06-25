@@ -1148,11 +1148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a55f28332e197478bbcaae6365f1fbfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlockDoubleJumpAbility: 0
-  unlockDashAbility: 0
-  unlockBallAbility: 0
-  unlockBombAbility: 0
-  unlockWallJumpAbility: 0
+  unlockDoubleJumpAbility: 1
+  unlockDashAbility: 1
+  unlockBallAbility: 1
+  unlockBombAbility: 1
+  unlockWallJumpAbility: 1
 --- !u!95 &1179227235
 Animator:
   serializedVersion: 5
@@ -1416,7 +1416,7 @@ GameObject:
   - component: {fileID: 1281822244}
   m_Layer: 8
   m_Name: BallSprite
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4236,7 +4236,7 @@ GameObject:
   - component: {fileID: 1286244997}
   m_Layer: 8
   m_Name: StandingSprite
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
