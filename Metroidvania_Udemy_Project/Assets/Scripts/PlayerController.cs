@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
             jumping = false;
             dashing = false;
             dashCounter = 0;
-            rb.velocity = new Vector2(0f, rb.velocity.y);
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
 
         if (standing.activeSelf)
@@ -222,7 +222,7 @@ public class PlayerController : MonoBehaviour
             shootCounter -= Time.deltaTime;
         }
 
-        if (standing.activeSelf && ballCounter <= 0)
+        if (standing.activeSelf && ballCounter >= waitToBall - 0.1f)
         {
             if (!dashing && shootCounter < 0)
             {
