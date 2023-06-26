@@ -243,15 +243,15 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (shootCounter < 0 && ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && UserInput.instance.moveInput.y > 0 && isOnGround && abilities.bombAbility)
+            if (shootCounter < 0 && ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.IsPressed() && UserInput.instance.moveInput.y > 0 && isOnGround && abilities.bombAbility)
             {
                 Instantiate(bombObject, bombPointUp.position, bombPointUp.rotation);
-                shootCounter = shootCooldown * 3;
+                shootCounter = shootCooldown * 2;
             }
-            else if (shootCounter < 0 &&ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.WasPressedThisFrame() && abilities.bombAbility)
+            else if (shootCounter < 0 &&ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.IsPressed() && abilities.bombAbility)
             {
                 Instantiate(bombObject, bombPointFront.position, bombPointFront.rotation);
-                shootCounter = shootCooldown * 3;
+                shootCounter = shootCooldown * 2;
             }
         }
     }
@@ -363,7 +363,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && !Physics2D.OverlapBox(aboveCheck.transform.position, new Vector2(0.9f, 1.6f), 0f, groundMask) && abilities.ballAbility)     // We check if the player push the direction down
+            if (UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && !Physics2D.OverlapBox(aboveCheck.transform.position, new Vector2(0.85f, 1.6f), 0f, groundMask) && abilities.ballAbility)     // We check if the player push the direction down
             {
                 ballCounter -= Time.deltaTime;
 
