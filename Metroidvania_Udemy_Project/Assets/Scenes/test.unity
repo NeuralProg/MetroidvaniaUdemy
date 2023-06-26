@@ -1069,7 +1069,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890243593}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.67, y: -2.04, z: 0}
+  m_LocalPosition: {x: 27.47, y: -0.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24380,7 +24380,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b35ffb1e296e4794941627341f757e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolPoints: []
 --- !u!1001 &1644317122
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25847,7 +25846,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 3
@@ -25902,6 +25901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalHealth: 5
+  damageAmount: 1
   deathEffect: {fileID: 7301545412307311522, guid: ebb6cd718bf694689b2fa88e18cf992e, type: 3}
 --- !u!114 &2103668954
 MonoBehaviour:
@@ -25932,7 +25932,8 @@ MonoBehaviour:
       startIndex: 
       variableStartIndex: 
       JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(111.01873,-80.18942)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(-0.6374283,147.842834)"},"ID":1,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":0},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(0,130)"},"ID":2,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-260.140381,213.311737)"},"ID":3,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.CheckMapFront","NodeData":{"Offset":"(-108.621078,133.748627)"},"ID":4,"Name":"Check
-        Map Front","Instant":true,"TransformfrontPoint":0,"SinglecircleRadius":0.5,"LayerMasklayersMToCheck":2112},{"Type":"BehaviorDesigner.Runtime.Tasks.Jump","NodeData":{"Offset":"(21.8937836,132.564331)"},"ID":5,"Name":"Jump","Instant":true,"SinglehorizontalForce":5,"SinglejumpHeight":10}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(180,216.779633)"},"ID":6,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Patroll","NodeData":{"Offset":"(-89.20581,133.349457)"},"ID":7,"Name":"Patroll","Instant":true,"TransformtargetedPoint":1,"SinglemoveSpeed":3},{"Type":"BehaviorDesigner.Runtime.Tasks.Patroll","NodeData":{"Offset":"(19.36792,125.749733)"},"ID":8,"Name":"Patroll","Instant":true,"TransformtargetedPoint":2,"SinglemoveSpeed":3},{"Type":"BehaviorDesigner.Runtime.Tasks.Patroll","NodeData":{"Offset":"(133.0194,125.074158)"},"ID":9,"Name":"Patroll","Instant":true,"TransformtargetedPoint":3,"SinglemoveSpeed":3},{"Type":"BehaviorDesigner.Runtime.Tasks.Patroll","NodeData":{"Offset":"(241.922577,125.810989)"},"ID":10,"Name":"Patroll","Instant":true,"TransformtargetedPoint":4,"SinglemoveSpeed":3},{"Type":"BehaviorDesigner.Runtime.Tasks.Patroll","NodeData":{"Offset":"(351.441,130)"},"ID":11,"Name":"Patroll","Instant":true,"TransformtargetedPoint":5,"SinglemoveSpeed":3}]}]}]}}'
+        Map Front","Instant":true,"TransformfrontPoint":0,"SinglecircleRadius":0.5,"LayerMasklayersMToCheck":2112},{"Type":"BehaviorDesigner.Runtime.Tasks.Jump","NodeData":{"Offset":"(21.8937836,132.564331)"},"ID":5,"Name":"Jump","Instant":true,"SinglehorizontalForce":5,"SinglejumpHeight":10}]},{"Type":"BehaviorDesigner.Runtime.Tasks.RandomSequence","NodeData":{"Offset":"(350,200)"},"ID":6,"Name":"Random
+        Sequence","Instant":true,"Int32seed":0,"BooleanuseSeed":false,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Patroll","NodeData":{"Offset":"(-240,135.2381)"},"ID":7,"Name":"Patroll","Instant":true,"TransformtargetedPoint":1,"SinglemoveSpeed":3},{"Type":"BehaviorDesigner.Runtime.Tasks.Patroll","NodeData":{"Offset":"(-140,140)"},"ID":8,"Name":"Patroll","Instant":true,"TransformtargetedPoint":2,"SinglemoveSpeed":3},{"Type":"BehaviorDesigner.Runtime.Tasks.Patroll","NodeData":{"Offset":"(-40,140)"},"ID":9,"Name":"Patroll","Instant":true,"TransformtargetedPoint":3,"SinglemoveSpeed":3},{"Type":"BehaviorDesigner.Runtime.Tasks.Patroll","NodeData":{"Offset":"(60,140)"},"ID":10,"Name":"Patroll","Instant":true,"TransformtargetedPoint":4,"SinglemoveSpeed":3},{"Type":"BehaviorDesigner.Runtime.Tasks.Patroll","NodeData":{"Offset":"(157,140)"},"ID":11,"Name":"Patroll","Instant":true,"TransformtargetedPoint":5,"SinglemoveSpeed":3}]}]}]}}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 
