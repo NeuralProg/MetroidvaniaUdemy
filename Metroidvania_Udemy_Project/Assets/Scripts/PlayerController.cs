@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask wallMask;
     private bool onWall;
     private bool wallJump = false;
+    private float wallSlideSpeed = 1.5f;
     private float wallJumpDuration = 0.15f;
     private float wasWalledCounter;
     private float wasWalledCooldown = 0.2f;
@@ -121,10 +122,8 @@ public class PlayerController : MonoBehaviour
             dashReset = true;
         }
 
-        if(Mathf.Abs(rb.velocity.y) > 30)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, (rb.velocity.y / Mathf.Abs(rb.velocity.y)) * 30);
-        }
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -30f, 30f));
+
 
         anim.SetBool("IsGrounded", isOnGround);
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
@@ -314,7 +313,7 @@ public class PlayerController : MonoBehaviour
 
         if(onWall)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y / 1.5f);
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlideSpeed, float.MaxValue));
         }
         else if(wasWalledCounter >= 0)
         {
