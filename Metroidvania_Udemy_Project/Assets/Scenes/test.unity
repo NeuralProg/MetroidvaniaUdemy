@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 51505305}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: PatrolPoint (1)
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -370,7 +370,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 279930306}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 62.3, y: 0.8, z: 0}
+  m_LocalPosition: {x: 77.23, y: 1.16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -424,6 +424,8 @@ MonoBehaviour:
   animStand: {fileID: 1286244997}
   animBall: {fileID: 1281822244}
   rb: {fileID: 0}
+  currentHealth: 0
+  maxHealth: 0
   canMove: 1
   groundPoint: {fileID: 1856270025}
   aboveCheck: {fileID: 1244380772}
@@ -883,7 +885,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 778377713}
-  - component: {fileID: 778377714}
   m_Layer: 8
   m_Name: WallPoint
   m_TagString: Untagged
@@ -906,32 +907,6 @@ Transform:
   m_Father: {fileID: 279930307}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &778377714
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 778377712}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.8, y: 1.35}
-  m_EdgeRadius: 0
 --- !u!1001 &824914750
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1079,7 +1054,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 890243594}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: PatrolPoint (2)
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -1110,7 +1085,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 916637464}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: PatrolPoint
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -1203,7 +1178,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1051050534}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: PatrolPoint (3)
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -1877,7 +1852,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1192809296}
-  - component: {fileID: 1192809297}
   m_Layer: 8
   m_Name: WallPointBack
   m_TagString: Untagged
@@ -1900,32 +1874,6 @@ Transform:
   m_Father: {fileID: 279930307}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1192809297
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1192809295}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.35}
-  m_EdgeRadius: 0
 --- !u!1001 &1195727031
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2076,7 +2024,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1244380772}
-  - component: {fileID: 1244380773}
   m_Layer: 8
   m_Name: CollisionAboveCheckPoint
   m_TagString: Untagged
@@ -2099,32 +2046,6 @@ Transform:
   m_Father: {fileID: 279930307}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1244380773
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1244380771}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.85, y: 1.6}
-  m_EdgeRadius: 0
 --- !u!1 &1271991839
 GameObject:
   m_ObjectHideFlags: 0
@@ -24253,7 +24174,7 @@ GameObject:
   - component: {fileID: 1560491730}
   - component: {fileID: 1560491732}
   - component: {fileID: 1560491731}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24387,7 +24308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1605936765}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Crab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24421,7 +24342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1618154058}
   - component: {fileID: 1618154059}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: PatrollPoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25579,7 +25500,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1856270025}
-  - component: {fileID: 1856270026}
   m_Layer: 8
   m_Name: GroundCheckPoint
   m_TagString: Untagged
@@ -25602,22 +25522,6 @@ Transform:
   m_Father: {fileID: 279930307}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &1856270026
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1856270024}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.35
 --- !u!1 &1864599583
 GameObject:
   m_ObjectHideFlags: 0
@@ -25627,7 +25531,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1864599584}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: FrontCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25997,6 +25901,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a70cdc8af8d0b49049925a968be87790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalHealth: 5
+  deathEffect: {fileID: 7301545412307311522, guid: ebb6cd718bf694689b2fa88e18cf992e, type: 3}
 --- !u!114 &2103668954
 MonoBehaviour:
   m_ObjectHideFlags: 0

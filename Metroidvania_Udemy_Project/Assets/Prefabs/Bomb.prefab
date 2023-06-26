@@ -120,9 +120,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f13571175e294f78ad9ec989bbb74e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impactEffect: {fileID: 0}
+  damageAmount: 0
   whatIsDestructible:
     serializedVersion: 2
-    m_Bits: 1280
+    m_Bits: 9472
   explosion: {fileID: 5378297693003518613, guid: 351c6100e0df64dedba977e5ab0c1837, type: 3}
 --- !u!50 &2854887426128323567
 Rigidbody2D:

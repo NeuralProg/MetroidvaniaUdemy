@@ -15,6 +15,10 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private float moveInput;
 
+    // Health
+    [HideInInspector] public int currentHealth;
+    [HideInInspector] public int maxHealth = 5;
+
     // Movements vars
     [HideInInspector] public bool canMove = true;
     private float moveSpeed = 8;
@@ -52,6 +56,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private UnityEngine.Transform shotPointTop;
     private float shootCooldown = 0.2f; 
     private float shootCounter;
+    private int shootDamage = 1;
 
     [Header("DashTrailEffect")]
     [SerializeField] private SpriteRenderer dashAfterImage;
@@ -87,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        
+        currentHealth = maxHealth;
     }
 
     void Update()
@@ -229,13 +234,17 @@ public class PlayerController : MonoBehaviour
                 // Shoot
                 if (UserInput.instance.controls.Shooting.Shoot.IsPressed() && UserInput.instance.moveInput.y > 0 && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f)
                 {
-                    Instantiate(shotToFire, shotPointTop.position, shotPointTop.rotation).moveDir = new Vector2(0f, 1f);
+                    BulletController shoot = Instantiate(shotToFire, shotPointTop.position, shotPointTop.rotation);
+                    shoot.moveDir = new Vector2(0f, 1f);
+                    shoot.damageAmount = shootDamage;
                     anim.SetTrigger("ShotFiredUp");
                     shootCounter = shootCooldown;
                 }
                 else if (UserInput.instance.controls.Shooting.Shoot.IsPressed() && shootCounter < 0)
                 {
-                    Instantiate(shotToFire, shotPointFront.position, shotPointFront.rotation).moveDir = new Vector2(transform.localScale.x, 0f);
+                    BulletController shoot = Instantiate(shotToFire, shotPointFront.position, shotPointFront.rotation);
+                    shoot.moveDir = new Vector2(transform.localScale.x, 0f);
+                    shoot.damageAmount = shootDamage;
                     anim.SetTrigger("ShotFiredFront");
                     shootCounter = shootCooldown;
                 }
@@ -389,6 +398,27 @@ public class PlayerController : MonoBehaviour
         wallJump = true;
         yield return new WaitForSeconds(wallJumpDuration);
         wallJump = false;
+    }
+
+    public void DamagePlayer(int damageTaken)
+    {
+        currentHealth -= damageTaken;
+
+        sr.color = Color.red;
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0; // To prevent being under 0 HP (because we can't display -2 for example in the lifebar)
+
+            gameObject.SetActive(false);
+        }
+
+        StartCoroutine(BlinkHitDelay());
+    }
+
+    private IEnumerator BlinkHitDelay()
+    {
+        yield return new WaitForSeconds(0.2f);
+        sr.color = Color.white;
     }
 
     #endregion

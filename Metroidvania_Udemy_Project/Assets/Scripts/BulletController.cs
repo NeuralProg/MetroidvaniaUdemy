@@ -2,33 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletController : MonoBehaviour
+public class BulletController : Weapon
 {
-    private float bulletSpeed = 12;
-    private Rigidbody2D rb;
+    protected float bulletSpeed = 12;
     [HideInInspector] public Vector2 moveDir;
-    public GameObject impactEffect;
 
-
-    private void Awake()
+    public override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        base.Start();
     }
 
-    // Update is called once per frame
     void Update()
     {
         rb.velocity = moveDir * bulletSpeed;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if(impactEffect != null)
+        if (LayerMask.LayerToName(other.gameObject.layer) == "Enemy")
+            other.GetComponent<Enemy>().DamageEnemy(damageAmount);
+
+        if (impactEffect != null)
         {
             Instantiate(impactEffect, transform.position, Quaternion.identity);
         }
+
         Destroy(gameObject);
     }
+
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
