@@ -19,7 +19,7 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         public override TaskStatus OnUpdate()
         {
-
+            transform.localScale = new Vector3((targetedPoint.position.x - transform.position.x) / Mathf.Abs(targetedPoint.position.x - transform.position.x), 1f, 1f);
             if (transform.position.x >= targetedPoint.position.x - 0.2f && transform.position.x <= targetedPoint.position.x + 0.2f)
             {
                 rb.velocity = new Vector2(0f, rb.velocity.y);
