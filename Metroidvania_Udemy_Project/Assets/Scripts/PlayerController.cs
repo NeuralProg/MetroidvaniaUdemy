@@ -11,12 +11,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator animStand;
     [SerializeField] private Animator animBall;
     private PlayerAbilityTracker abilities;
-    private Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     private Animator anim;
     private float moveInput;
 
     // Movements vars
-    private bool canMove = true;
+    [HideInInspector] public bool canMove = true;
     private float moveSpeed = 8;
     private float jumpForce = 20;
     private bool canDoubleJump;
@@ -105,6 +105,7 @@ public class PlayerController : MonoBehaviour
             jumping = false;
             dashing = false;
             dashCounter = 0;
+            rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
         if (standing.activeSelf)
@@ -222,7 +223,7 @@ public class PlayerController : MonoBehaviour
             shootCounter -= Time.deltaTime;
         }
 
-        if (standing.activeSelf)
+        if (standing.activeSelf && ballCounter <= 0)
         {
             if (!dashing && shootCounter < 0)
             {

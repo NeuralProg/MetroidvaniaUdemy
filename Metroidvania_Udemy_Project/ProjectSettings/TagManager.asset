@@ -17,7 +17,7 @@ TagManager:
   - No collision with player
   - Destructible
   - Wall
-  - No collision with shot
+  - Pickups
   - 
   - 
   - 
