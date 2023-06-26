@@ -425,7 +425,7 @@ MonoBehaviour:
   animBall: {fileID: 1281822244}
   rb: {fileID: 0}
   currentHealth: 0
-  maxHealth: 0
+  maxHealth: 4
   canMove: 1
   groundPoint: {fileID: 1856270025}
   aboveCheck: {fileID: 1244380772}
@@ -25902,6 +25902,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalHealth: 5
+  collisionDamageAmount: 1
   deathEffect: {fileID: 7301545412307311522, guid: ebb6cd718bf694689b2fa88e18cf992e, type: 3}
 --- !u!114 &2103668954
 MonoBehaviour:

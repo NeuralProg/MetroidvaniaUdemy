@@ -5,6 +5,8 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance; // Make the player script accesible from nowhere (because there will only be one player in the scenes)
+
     #region Variables
     [Header("References")]
     [SerializeField] private SpriteRenderer sr;
@@ -81,6 +83,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
+
         rb = GetComponent<Rigidbody2D>();
         abilities = GetComponent<PlayerAbilityTracker>();
 

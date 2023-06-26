@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private int totalHealth = 4;
-    [HideInInspector] public int damageAmount = 1;
+    [SerializeField] private int collisionDamageAmount = 1;
     [SerializeField] private GameObject deathEffect;
 
     public void DamageEnemy(int damage)
@@ -43,6 +43,6 @@ public class Enemy : MonoBehaviour
 
     private void DealDamage()
     {
-
+        PlayerController.instance.DamagePlayer(collisionDamageAmount);  
     }
 }
