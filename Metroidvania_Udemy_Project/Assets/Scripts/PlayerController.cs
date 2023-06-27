@@ -243,7 +243,6 @@ public class PlayerController : MonoBehaviour
                     shoot.damageAmount = shootDamage;
                     shoot.shotByPlayer = true;
                     anim.SetTrigger("ShotFiredUp");
-                    print("greg");
                     shootCounter = shootCooldown;
                 }
                 else if (UserInput.instance.controls.Shooting.Shoot.IsPressed() && shootCounter < 0)
@@ -253,7 +252,6 @@ public class PlayerController : MonoBehaviour
                     shoot.damageAmount = shootDamage;
                     shoot.shotByPlayer = true;
                     anim.SetTrigger("ShotFiredFront");
-                    print("ouais");
                     shootCounter = shootCooldown;
                 }
             }
