@@ -6,6 +6,7 @@ public class BulletController : Weapon
 {
     protected float bulletSpeed = 12;
     [HideInInspector] public Vector2 moveDir;
+    [HideInInspector] public bool shotByPlayer = false;
 
     public override void Start()
     {
@@ -19,15 +20,19 @@ public class BulletController : Weapon
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (LayerMask.LayerToName(other.gameObject.layer) == "Enemy")
-            other.GetComponent<Enemy>().DamageEnemy(damageAmount);
-
-        if (impactEffect != null)
+        if (LayerMask.LayerToName(other.gameObject.layer) == "Enemy" && shotByPlayer)
         {
-            Instantiate(impactEffect, transform.position, Quaternion.identity);
+            other.GetComponent<Enemy>().DamageEnemy(damageAmount);
         }
+        if((LayerMask.LayerToName(other.gameObject.layer) != "Enemy" && !shotByPlayer) || (LayerMask.LayerToName(other.gameObject.layer) != "Player" && shotByPlayer))
+        {
+            if (impactEffect != null)
+            {
+                Instantiate(impactEffect, transform.position, Quaternion.identity);
+            }
 
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }
     }
 
     private void OnBecameInvisible()

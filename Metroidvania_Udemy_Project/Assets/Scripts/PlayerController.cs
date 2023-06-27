@@ -241,6 +241,7 @@ public class PlayerController : MonoBehaviour
                     BulletController shoot = Instantiate(shotToFire, shotPointTop.position, shotPointTop.rotation);
                     shoot.moveDir = new Vector2(0f, 1f);
                     shoot.damageAmount = shootDamage;
+                    shoot.shotByPlayer = true;
                     anim.SetTrigger("ShotFiredUp");
                     shootCounter = shootCooldown;
                 }
@@ -249,6 +250,7 @@ public class PlayerController : MonoBehaviour
                     BulletController shoot = Instantiate(shotToFire, shotPointFront.position, shotPointFront.rotation);
                     shoot.moveDir = new Vector2(transform.localScale.x, 0f);
                     shoot.damageAmount = shootDamage;
+                    shoot.shotByPlayer = true;
                     anim.SetTrigger("ShotFiredFront");
                     shootCounter = shootCooldown;
                 }

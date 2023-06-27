@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3346251669571363111}
   - component: {fileID: 3346251669571363100}
   m_Layer: 7
-  m_Name: Player_Shot
+  m_Name: Shot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,5 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39405d7943ace424a90e5a497cb7af21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDir: {x: 0, y: 0}
   impactEffect: {fileID: 7301545412307311522, guid: fc64c0ca3dad942e2b082482654fabae, type: 3}
+  damageAmount: 0
+  moveDir: {x: 0, y: 0}
+  ignoreLayers:
+  - serializedVersion: 2
+    m_Bits: 8192
