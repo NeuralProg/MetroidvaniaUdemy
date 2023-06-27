@@ -20,11 +20,8 @@ public class PlayerController : MonoBehaviour
     private float moveInput;
 
     [Header("Health")]
-    [SerializeField] private Image[] hearts;
-    [SerializeField] private Sprite fullHeart;
-    [SerializeField] private Sprite emptyHeart;
     private float invincibilityTime = 1.5f;
-    private float invincibilityTimer;
+    [HideInInspector]public float invincibilityTimer;
     private float blinkOnHitTime = 0.075f;
     private float blinkOnHitTimer;
     [HideInInspector] public int currentHealth;
@@ -92,7 +89,15 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null) // Set this script as an instance only if there are no existing instances
+        {
+            instance = this; // Set this script as an instance
+            DontDestroyOnLoad(gameObject); // When this GameObject spawn in a scene, we don't destroy it
+        }
+        else
+        {
+            Destroy(gameObject); // if there is already a player (an instance of this script), we destroy this gameobject
+        }
 
         rb = GetComponent<Rigidbody2D>();
         abilities = GetComponent<PlayerAbilityTracker>();
@@ -129,7 +134,6 @@ public class PlayerController : MonoBehaviour
         }
         
         CheckInvincibility();
-        ShowHeartsUI();
 
         if (standing.activeSelf)
             anim = animStand;
@@ -430,14 +434,15 @@ public class PlayerController : MonoBehaviour
             {
                 currentHealth = 0; // To prevent being under 0 HP (because we can't display -2 for example in the lifebar)
 
-                foreach (Image heart in hearts)
+                foreach (Image heart in UIController.instance.hearts)
                 {
-                    heart.sprite = emptyHeart;
+                    heart.sprite = UIController.instance.emptyHeart;
                 }
 
                 standSr.color = Color.white;
                 ballSr.color = Color.white;
-                gameObject.SetActive(false);
+
+                RespawnController.instance.Respawn();
             }
             else
             {
@@ -481,21 +486,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void ShowHeartsUI()
+    public void HealPlayer(int healAmount)
     {
-        // UI Hearts
-        for (int i = 0; i < hearts.Length; i++)
-        {
-            if (i < currentHealth)
-                hearts[i].sprite = fullHeart;
-            else
-                hearts[i].sprite = emptyHeart;
+        currentHealth += healAmount;
 
-            if (i < maxHealth)
-                hearts[i].enabled = true; // Enable onb screen only hearts under our max amount of hearts
-            else
-                hearts[i].enabled = false;
-        }
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
     }
 
     #endregion
