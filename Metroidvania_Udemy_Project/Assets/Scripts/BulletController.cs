@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BulletController : Weapon
 {
-    protected float bulletSpeed = 12;
+    [HideInInspector] public float bulletSpeed = 12;
     [HideInInspector] public Vector2 moveDir;
     [HideInInspector] public bool shotByPlayer = false;
 
@@ -24,7 +24,12 @@ public class BulletController : Weapon
         {
             other.GetComponent<Enemy>().DamageEnemy(damageAmount);
         }
-        if((LayerMask.LayerToName(other.gameObject.layer) != "Enemy" && !shotByPlayer) || (LayerMask.LayerToName(other.gameObject.layer) != "Player" && shotByPlayer))
+        if (LayerMask.LayerToName(other.gameObject.layer) == "Player" && !shotByPlayer)
+        {
+            PlayerController.instance.DamagePlayer(damageAmount);
+        }
+
+        if ((LayerMask.LayerToName(other.gameObject.layer) != "Enemy" && !shotByPlayer) || (LayerMask.LayerToName(other.gameObject.layer) != "Player" && shotByPlayer))
         {
             if (impactEffect != null)
             {

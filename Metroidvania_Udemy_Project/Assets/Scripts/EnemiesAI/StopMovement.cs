@@ -12,7 +12,11 @@ namespace BehaviorDesigner.Runtime.Tasks
         public override void OnStart()
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
-            gameObject.GetComponentInChildren<Animator>().SetFloat("Speed", 0f);
+            foreach(AnimatorControllerParameter param in gameObject.GetComponentInChildren<Animator>().parameters)
+            {
+                if(param.name == "Speed")
+                    gameObject.GetComponentInChildren<Animator>().SetFloat("Speed", 0f);
+            }
             stoped = true;
         }
 

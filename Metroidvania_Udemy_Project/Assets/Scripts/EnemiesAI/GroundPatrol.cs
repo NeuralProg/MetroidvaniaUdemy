@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BehaviorDesigner.Runtime.Tasks
 { 
-    public class Patrol : Action
+    public class GroundPatrol : Action
     {
         [Header("Patrol Info")]
         [SerializeField] private UnityEngine.Transform targetedPoint;

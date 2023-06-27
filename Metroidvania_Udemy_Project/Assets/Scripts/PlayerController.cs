@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private BulletController shotToFire;
     [SerializeField] private UnityEngine.Transform shotPointFront;
     [SerializeField] private UnityEngine.Transform shotPointTop;
-    private float shootCooldown = 0.4f; 
+    private float shootCooldown = 0.2f; 
     private float shootCounter;
     private int shootDamage = 1;
 
