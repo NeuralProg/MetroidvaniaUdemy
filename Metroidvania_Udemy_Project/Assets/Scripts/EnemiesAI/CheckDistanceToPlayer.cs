@@ -17,6 +17,8 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         public override TaskStatus OnUpdate()
         {
+            Debug.Log(Vector3.Distance(transform.position, player.position) + gameObject.name);
+
             if(Vector3.Distance(transform.position, player.position) < rangeToStartChase && player.gameObject.activeSelf)
                 return TaskStatus.Success;
             else

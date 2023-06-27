@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            instance.canMove = true;
             Destroy(gameObject); // if there is already a player (an instance of this script), we destroy this gameobject
         }
 
