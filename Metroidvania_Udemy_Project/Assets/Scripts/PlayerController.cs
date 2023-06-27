@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerController : MonoBehaviour
@@ -9,7 +10,8 @@ public class PlayerController : MonoBehaviour
 
     #region Variables
     [Header("References")]
-    [SerializeField] private SpriteRenderer sr;
+    [SerializeField] private SpriteRenderer standSr;
+    [SerializeField] private SpriteRenderer ballSr;
     [SerializeField] private Animator animStand;
     [SerializeField] private Animator animBall;
     private PlayerAbilityTracker abilities;
@@ -17,9 +19,16 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private float moveInput;
 
-    // Health
+    [Header("Health")]
+    [SerializeField] private Image[] hearts;
+    [SerializeField] private Sprite fullHeart;
+    [SerializeField] private Sprite emptyHeart;
+    private float invincibilityTime = 1.5f;
+    private float invincibilityTimer;
+    private float blinkOnHitTime = 0.075f;
+    private float blinkOnHitTimer;
     [HideInInspector] public int currentHealth;
-    [HideInInspector] public int maxHealth = 5;
+    [HideInInspector] public int maxHealth = 2;
 
     // Movements vars
     [HideInInspector] public bool canMove = true;
@@ -96,6 +105,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        maxHealth = 5; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         currentHealth = maxHealth;
     }
 
@@ -117,6 +127,9 @@ public class PlayerController : MonoBehaviour
             dashCounter = 0;
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
+        
+        CheckInvincibility();
+        ShowHeartsUI();
 
         if (standing.activeSelf)
             anim = animStand;
@@ -132,7 +145,6 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -30f, 30f));
-
 
         anim.SetBool("IsGrounded", isOnGround);
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
@@ -344,7 +356,7 @@ public class PlayerController : MonoBehaviour
     private void ShowAfterImage()
     {
         SpriteRenderer img = Instantiate(dashAfterImage, transform.position, transform.rotation);
-        img.sprite = sr.sprite;
+        img.sprite = standSr.sprite;
         img.transform.localScale = transform.localScale;
         img.color = afterImageColor;
 
@@ -408,23 +420,82 @@ public class PlayerController : MonoBehaviour
 
     public void DamagePlayer(int damageTaken)
     {
-        currentHealth -= damageTaken;
-
-        sr.color = Color.red;
-        if (currentHealth <= 0)
+        if (invincibilityTimer <= 0) // Only apply damage when not invincible
         {
-            currentHealth = 0; // To prevent being under 0 HP (because we can't display -2 for example in the lifebar)
+            currentHealth -= damageTaken;
 
-            gameObject.SetActive(false);
+            StartCoroutine(RedHitmarker());
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0; // To prevent being under 0 HP (because we can't display -2 for example in the lifebar)
+
+                foreach (Image heart in hearts)
+                {
+                    heart.sprite = emptyHeart;
+                }
+
+                standSr.color = Color.white;
+                ballSr.color = Color.white;
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                invincibilityTimer = invincibilityTime;
+                blinkOnHitTimer = blinkOnHitTime;
+            }
         }
-
-        StartCoroutine(BlinkHitDelay());
     }
 
-    private IEnumerator BlinkHitDelay()
+    private IEnumerator RedHitmarker()
     {
+        standSr.color = Color.red;
+        ballSr.color = Color.red;
         yield return new WaitForSeconds(0.2f);
-        sr.color = Color.white;
+        standSr.color = Color.white;
+        ballSr.color = Color.white;
+    }
+
+    private void CheckInvincibility()
+    {
+        if (invincibilityTimer > 0)
+        {
+            invincibilityTimer -= Time.deltaTime;
+            blinkOnHitTimer -= Time.deltaTime;
+
+            if (blinkOnHitTimer <= 0)
+            {
+                standSr.enabled = !standSr.enabled;
+                ballSr.enabled = !ballSr.enabled;
+
+                blinkOnHitTimer = blinkOnHitTime;
+            }
+
+            if (invincibilityTimer <= 0)
+            {
+                blinkOnHitTimer = 0f;
+
+                standSr.enabled = true;
+                ballSr.enabled = true;
+            }
+        }
+    }
+
+    private void ShowHeartsUI()
+    {
+        // UI Hearts
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < currentHealth)
+                hearts[i].sprite = fullHeart;
+            else
+                hearts[i].sprite = emptyHeart;
+
+            if (i < maxHealth)
+                hearts[i].enabled = true; // Enable onb screen only hearts under our max amount of hearts
+            else
+                hearts[i].enabled = false;
+        }
     }
 
     #endregion
