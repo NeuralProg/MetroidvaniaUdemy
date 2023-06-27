@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private BulletController shotToFire;
     [SerializeField] private UnityEngine.Transform shotPointFront;
     [SerializeField] private UnityEngine.Transform shotPointTop;
-    private float shootCooldown = 0.2f; 
+    private float shootCooldown = 0.4f; 
     private float shootCounter;
     private int shootDamage = 1;
 
@@ -243,6 +243,7 @@ public class PlayerController : MonoBehaviour
                     shoot.damageAmount = shootDamage;
                     shoot.shotByPlayer = true;
                     anim.SetTrigger("ShotFiredUp");
+                    print("greg");
                     shootCounter = shootCooldown;
                 }
                 else if (UserInput.instance.controls.Shooting.Shoot.IsPressed() && shootCounter < 0)
@@ -252,6 +253,7 @@ public class PlayerController : MonoBehaviour
                     shoot.damageAmount = shootDamage;
                     shoot.shotByPlayer = true;
                     anim.SetTrigger("ShotFiredFront");
+                    print("ouais");
                     shootCounter = shootCooldown;
                 }
             }

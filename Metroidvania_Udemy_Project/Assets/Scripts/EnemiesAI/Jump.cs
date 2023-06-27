@@ -9,6 +9,8 @@ namespace BehaviorDesigner.Runtime.Tasks
     {
         [SerializeField] private float horizontalForce = 5f;
         [SerializeField] private float jumpHeight = 10f;
+        [SerializeField] private float jumpTime = 2f;
+        private float jumpTimer;
 
         private bool hasJumped = false;
         private Rigidbody2D rb;
@@ -17,15 +19,21 @@ namespace BehaviorDesigner.Runtime.Tasks
         {
             rb = GetComponent<Rigidbody2D>();
             rb.velocity = new Vector2(transform.localScale.x * horizontalForce, jumpHeight);
-            hasJumped = true;
+            gameObject.GetComponentInChildren<Animator>().SetTrigger("Jump");
+
+            jumpTimer = jumpTime;
         }
 
         public override TaskStatus OnUpdate()
         {
+            jumpTimer -= Time.deltaTime;
+            if (jumpTimer <= 0f)
+                hasJumped = true;
+            else
+                hasJumped = false;
 
             if (hasJumped)
             {
-                gameObject.GetComponentInChildren<Animator>().SetTrigger("Jump");
                 return TaskStatus.Success;
             }
             else

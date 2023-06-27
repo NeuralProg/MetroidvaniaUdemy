@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator HitBlinkDelay()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
     }
 
