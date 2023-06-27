@@ -6,6 +6,8 @@ public class DestructiblePhases : MonoBehaviour
 {
     private SpriteRenderer sr;
     [SerializeField] private Sprite[] phases;
+    public bool canBeDestroyedByShoot = false;
+    [SerializeField] private GameObject effectOnDespawn;
     [HideInInspector] public int currentPhase = 0;
 
     void Awake()
@@ -18,6 +20,8 @@ public class DestructiblePhases : MonoBehaviour
     {
         if (currentPhase >= phases.Length)
         {
+            if(effectOnDespawn!= null)
+                Instantiate(effectOnDespawn, transform.position, transform.rotation);
             Destroy(gameObject);
         }
         else

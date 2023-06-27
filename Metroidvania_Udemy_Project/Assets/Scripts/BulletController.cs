@@ -28,8 +28,12 @@ public class BulletController : Weapon
         {
             PlayerController.instance.DamagePlayer(damageAmount);
         }
+        if (LayerMask.LayerToName(other.gameObject.layer) == "Destructible" && other.GetComponent<DestructiblePhases>().canBeDestroyedByShoot == true)
+        {
+            other.GetComponent<DestructiblePhases>().currentPhase += 1;
+        }
 
-        if ((LayerMask.LayerToName(other.gameObject.layer) != "Enemy" && !shotByPlayer) || (LayerMask.LayerToName(other.gameObject.layer) != "Player" && shotByPlayer))
+        if ((LayerMask.LayerToName(other.gameObject.layer) != "Enemy" && !shotByPlayer) || (LayerMask.LayerToName(other.gameObject.layer) != "Player" && shotByPlayer) || LayerMask.LayerToName(other.gameObject.layer) == "Destructible")
         {
             if (impactEffect != null)
             {
