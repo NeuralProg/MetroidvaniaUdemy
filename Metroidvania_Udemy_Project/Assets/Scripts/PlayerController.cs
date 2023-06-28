@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
     private float jumpForce = 20;
     private bool canDoubleJump;
     private bool jumping = false;
+    private float coyoteTime = 0.15f;
+    private float coyoteTimer;
     private bool willLand = false;
     private float dashSpeed = 25;
     private float dashTime = 0.2f;
@@ -142,8 +144,16 @@ public class PlayerController : MonoBehaviour
             anim = animBall;
 
         // Check Ground
-        isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.35f, groundMask);
-        if (isOnGround || onWall)
+        isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.25f, groundMask);
+        if (isOnGround) // Update The coyote time
+        {
+            coyoteTimer = coyoteTime;
+        }
+        else
+        {
+            coyoteTimer -= Time.deltaTime;
+        }
+        if (isOnGround || onWall) // Reset abilities cooldown
         {
             canDoubleJump = true;
             dashReset = true;
@@ -192,12 +202,12 @@ public class PlayerController : MonoBehaviour
             if (!onWall && wasWalledCounter <= 0)
             {
                 // Jump
-                if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && isOnGround)
+                if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && coyoteTimer >= 0f)
                 {
                     rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                     jumping = true;
                 }
-                else if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && !isOnGround && canDoubleJump && abilities.doubleJumpAbility)
+                else if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && coyoteTimer < 0f && canDoubleJump && abilities.doubleJumpAbility)
                 {
                     rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                     anim.SetTrigger("DoubleJump");
