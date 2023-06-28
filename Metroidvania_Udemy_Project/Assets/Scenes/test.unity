@@ -912,6 +912,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnPoint: {fileID: 1978962246}
   respawnDelay: 3
+  playerDeathEffect: {fileID: 7301545412307311522, guid: 34d076b8a828a45eb892218798db9c8e, type: 3}
+  respawnEffect: {fileID: 4485055217388826829, guid: b4b901f63b1f44c99ad35ae76da104d2, type: 3}
 --- !u!4 &566253364
 Transform:
   m_ObjectHideFlags: 0

@@ -10,6 +10,8 @@ public class RespawnController : MonoBehaviour
 
     public Transform respawnPoint;
     [HideInInspector] public float respawnDelay = 3f;
+    [SerializeField] private GameObject playerDeathEffect;
+    [SerializeField] private GameObject respawnEffect;
 
     private GameObject player;
 
@@ -40,15 +42,21 @@ public class RespawnController : MonoBehaviour
     private IEnumerator RespawnDelay()
     {
         player.SetActive(false);
+        if (playerDeathEffect != null)
+            Instantiate(playerDeathEffect, PlayerController.instance.transform.position, PlayerController.instance.transform.rotation);
 
         yield return new WaitForSeconds(respawnDelay);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
         player.transform.position = respawnPoint.position;
         player.transform.localScale = respawnPoint.localScale;
         player.SetActive(true);
         PlayerController.instance.HealPlayer(PlayerController.instance.maxHealth);
         PlayerController.instance.invincibilityTimer = 2f;
+
+        yield return new WaitForSeconds(Time.deltaTime);
+
+        if (respawnEffect != null)
+            Instantiate(respawnEffect, PlayerController.instance.transform.position, PlayerController.instance.transform.rotation);
     }
 }
