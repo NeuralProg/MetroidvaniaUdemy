@@ -68,7 +68,6 @@ namespace BehaviorDesigner.Runtime.Tasks
             {
                 UpdatePath();
                 updateTimer = updateDelay;
-                Debug.Log("updated");
             }
 
             if (shouldChasePlayer)
