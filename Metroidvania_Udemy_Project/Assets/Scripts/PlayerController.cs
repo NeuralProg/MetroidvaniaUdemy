@@ -181,7 +181,7 @@ public class PlayerController : MonoBehaviour
             if(!wallJump)
                 rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
             else
-                rb.velocity = new Vector2((moveInput * moveSpeed / 2) + transform.localScale.x * jumpForce / 1.5f, jumpForce / 2);
+                rb.velocity = new Vector2((moveInput * moveSpeed / 2) + transform.localScale.x * jumpForce/2 / 1.5f, jumpForce / 2);
 
             // Flip
             if (rb.velocity.x < 0)
@@ -248,6 +248,9 @@ public class PlayerController : MonoBehaviour
                 transform.localScale = new Vector3(-transform.localScale.x, 1f, 1f);
                 StartCoroutine(WallJump());
             }
+
+            if(UserInput.instance.controls.Jumping.Jump.WasReleasedThisFrame() && wallJump)
+                rb.velocity = new Vector2(rb.velocity.x/2, rb.velocity.y/4);
         }
     }
 
