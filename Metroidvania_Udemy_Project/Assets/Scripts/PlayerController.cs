@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject landEffect;
     private bool isOnGround;
     [SerializeField] private UnityEngine.Transform wallPoint;
-    [SerializeField] private UnityEngine.Transform wallPointBack;
+
     [SerializeField] private LayerMask wallMask;
     private bool onWall;
     private bool wallJump = false;
@@ -236,11 +236,11 @@ public class PlayerController : MonoBehaviour
                     Instantiate(landEffect, groundPoint.transform.position, Quaternion.identity);
                 }
             }
-            else if(!onWall && Physics2D.OverlapBox(wallPointBack.position, new Vector2(1f, 1.35f), 0f, wallMask) && UserInput.instance.controls.Jumping.Jump.IsPressed() && wasWalledCounter > 0 && abilities.wallJumpAbility)
+            else if(!onWall && UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && wasWalledCounter > 0 && abilities.wallJumpAbility && !Physics2D.OverlapBox(wallPoint.position, new Vector2(0.8f, 1.35f), 0f, wallMask))
             {
                 // Jump forward
-                rb.velocity = new Vector2(transform.localScale.x * jumpForce/3, jumpForce/2);
-                jumping = true;
+                StartCoroutine(WallJump());
+   
             }
             else if (onWall && UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && abilities.wallJumpAbility)
             {

@@ -509,7 +509,6 @@ MonoBehaviour:
     m_Bits: 1088
   landEffect: {fileID: 7301545412307311522, guid: 99173d6ed56184ec4a43894cc0126c8b, type: 3}
   wallPoint: {fileID: 778377713}
-  wallPointBack: {fileID: 1192809296}
   wallMask:
     serializedVersion: 2
     m_Bits: 2048
@@ -536,10 +535,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doubleJumpAbility: 0
-  dashAbility: 0
+  dashAbility: 1
   ballAbility: 0
   bombAbility: 0
-  wallJumpAbility: 0
+  wallJumpAbility: 1
 --- !u!1 &291220897
 GameObject:
   m_ObjectHideFlags: 0
