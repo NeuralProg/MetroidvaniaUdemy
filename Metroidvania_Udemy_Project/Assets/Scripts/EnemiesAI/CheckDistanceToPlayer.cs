@@ -7,7 +7,8 @@ namespace BehaviorDesigner.Runtime.Tasks
 {
     public class CheckDistanceToPlayer : Conditional
     {
-        [SerializeField] private float rangeToStartChase;
+        [SerializeField] private float rangeToStartChaseX;
+        [SerializeField] private float rangeToStartChaseY;
         private Transform player;
 
         public override void OnStart()
@@ -17,9 +18,10 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         public override TaskStatus OnUpdate()
         {
-            Debug.Log(Vector3.Distance(transform.position, player.position) + gameObject.name);
+            //Debug.Log( gameObject.name);
 
-            if(Vector3.Distance(transform.position, player.position) < rangeToStartChase && player.gameObject.activeSelf)
+            //if(Vector3.Distance(player.position, transform.position) < rangeToStartChase && player.gameObject.activeSelf)
+            if((player.position.x >= (transform.position.x - rangeToStartChaseX) && player.position.x <= (transform.position.x + rangeToStartChaseX)) && (player.position.y >= (transform.position.y - rangeToStartChaseY) && player.position.y <= (transform.position.y + rangeToStartChaseY)))
                 return TaskStatus.Success;
             else
                 return TaskStatus.Failure;
