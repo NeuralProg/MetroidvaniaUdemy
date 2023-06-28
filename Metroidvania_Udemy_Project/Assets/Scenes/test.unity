@@ -535,10 +535,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doubleJumpAbility: 0
-  dashAbility: 1
+  dashAbility: 0
   ballAbility: 0
   bombAbility: 0
-  wallJumpAbility: 1
+  wallJumpAbility: 0
 --- !u!1 &291220897
 GameObject:
   m_ObjectHideFlags: 0
