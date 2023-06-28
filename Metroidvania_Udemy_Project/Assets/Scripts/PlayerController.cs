@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask wallMask;
     private bool onWall;
     private bool wallJump = false;
-    private float wallSlideSpeed = 1.5f;
+    private float wallSlideSpeed = 10f;
     private float wallJumpDuration = 0.15f;
     private float wasWalledCounter;
     private float wasWalledCooldown = 0.2f;
@@ -181,7 +181,7 @@ public class PlayerController : MonoBehaviour
             if(!wallJump)
                 rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
             else
-                rb.velocity = new Vector2((moveInput * moveSpeed / 2) + transform.localScale.x * jumpForce/2 / 1.5f, jumpForce / 2);
+                rb.velocity = new Vector2((moveInput * moveSpeed / 2) + transform.localScale.x * jumpForce/2f, jumpForce / 2);
 
             // Flip
             if (rb.velocity.x < 0)
@@ -249,8 +249,11 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(WallJump());
             }
 
-            if(UserInput.instance.controls.Jumping.Jump.WasReleasedThisFrame() && wallJump)
-                rb.velocity = new Vector2(rb.velocity.x/2, rb.velocity.y/4);
+            if (UserInput.instance.controls.Jumping.Jump.WasReleasedThisFrame() && wallJump)
+            {
+                wallJump = false;
+                rb.velocity = new Vector2(rb.velocity.x / 2, rb.velocity.y / 4);
+            }
         }
     }
 
@@ -341,24 +344,18 @@ public class PlayerController : MonoBehaviour
 
     private void Wall()
     {
-        if(Physics2D.OverlapBox(wallPoint.position, new Vector2(0.8f, 1.35f), 0f, wallMask) && (UserInput.instance.moveInput[0] > 0.9f && transform.localScale.x == 1 || UserInput.instance.moveInput[0] < -0.9f && transform.localScale.x == -1))
+        if (!isOnGround && abilities.wallJumpAbility && !ball.activeSelf && Physics2D.OverlapBox(wallPoint.position, new Vector2(0.8f, 1.35f), 0f, wallMask))
         {
-            if (!isOnGround && abilities.wallJumpAbility && !ball.activeSelf)
-            {
+            if((UserInput.instance.moveInput[0] > 0.9f && transform.localScale.x == 1 || UserInput.instance.moveInput[0] < -0.9f && transform.localScale.x == -1) && !onWall)
                 onWall = true;
-                wasWalledCounter = wasWalledCooldown;
-            }
-            else
-                onWall = false;
         }
         else
-        {
-            onWall= false;
-        }
+            onWall = false;
 
         if(onWall)
         {
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlideSpeed, float.MaxValue));
+            wasWalledCounter = wasWalledCooldown;
         }
         else if(wasWalledCounter >= 0)
         {
