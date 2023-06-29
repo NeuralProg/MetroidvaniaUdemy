@@ -18,21 +18,24 @@ namespace BehaviorDesigner.Runtime.Tasks
         [SerializeField] private bool shouldChasePlayer = false;
 
         [Header("Patrol Info")]
-        [SerializeField] private float speed = 300f;
+        [SerializeField] private float speed = 3f;
         [SerializeField] private bool finishOnHit = false;
         private bool finished = false;
         [SerializeField] private bool finishOnDuration = false;
         [SerializeField] private float finishOnDurationTime = 0f;
         private float finishOnDurationTimer;
+        [SerializeField] private UnityEngine.Transform checkFront, checkGround;
+        [SerializeField] private float checkRadius = 0.5f;
+        [SerializeField] private LayerMask whatIsGround, frontJump;
+        [SerializeField] private float nextWaypointDistance = 1f;
 
         [Header("Jump")]
         [SerializeField] private bool jumpEnabled = true;
+        [SerializeField] private float playerDistanceToJump = 0f;
         [SerializeField] private float jumpMaxHeightActivation = 0.8f;
-        [SerializeField] private float jumpForce = 200f;
-        public float jumpCheckOffset = 0.1f;
+        [SerializeField] private float jumpForce = 15f;
         private bool isGrounded = false;
 
-        private float nextWaypointDistance = 3f;
         private Path path;
         private int currentWaypoint = 0;
 
@@ -78,29 +81,8 @@ namespace BehaviorDesigner.Runtime.Tasks
                 updateTimer = updateDelay;
             }
 
-            if (shouldChasePlayer)
-                targetedPoint = player.gameObject.transform;
-
-            if (finishOnDuration)
-                finishOnDurationTimer -= Time.deltaTime;
-            if (finishOnDurationTimer < 0f)
-                finished = true;
-
-            gameObject.GetComponentInChildren<Animator>().SetFloat("Speed", Mathf.Abs(rb.velocity.x));
-
-            if (finished)
-            {
-                finished = false;
-                return TaskStatus.Success;
-            }
-            else
+            if(path == null)
                 return TaskStatus.Running;
-        }
-
-        public override void OnFixedUpdate()
-        {
-            if (path == null)
-                return;
 
             if (currentWaypoint >= path.vectorPath.Count) // If we are above the number of waypoints of the path
             {
@@ -113,38 +95,54 @@ namespace BehaviorDesigner.Runtime.Tasks
                 currentWaypoint = 0;
             }
 
-            UnityEngine.Vector3 startOffset = transform.position - new UnityEngine.Vector3(0f, GetComponent<Collider2D>().bounds.extents.y + jumpCheckOffset);
-            isGrounded = Physics2D.Raycast(startOffset, -UnityEngine.Vector3.up, 0.05f);
+            if (shouldChasePlayer)
+                targetedPoint = player.gameObject.transform;
+
+            if (finishOnDuration)
+                finishOnDurationTimer -= Time.deltaTime;
+            if (finishOnDurationTimer < 0f)
+                finished = true;
+
+            isGrounded = Physics2D.OverlapCircle(checkGround.position, checkRadius, whatIsGround);
 
             // Direction Calculation
             UnityEngine.Vector2 direction = ((UnityEngine.Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-            UnityEngine.Vector2 force = direction * speed * Time.deltaTime;
+
+            rb.velocity = new UnityEngine.Vector2(direction.x * speed, rb.velocity.y);
 
             // Jump
             if (jumpEnabled && isGrounded)
             {
-                if (direction.y > jumpMaxHeightActivation)
+                if ((direction.y > jumpMaxHeightActivation && Mathf.Abs(transform.position.x - player.transform.position.x) <= playerDistanceToJump) || Physics2D.OverlapCircle(checkFront.position, checkRadius, frontJump))
                 {
-                    rb.AddForce(UnityEngine.Vector2.up * jumpForce);
+                    rb.velocity = new UnityEngine.Vector2(rb.velocity.x, jumpForce);
                     gameObject.GetComponentInChildren<Animator>().SetTrigger("Jump");
                 }
             }
 
-            rb.AddForce(force);
+            // Direction Graphics Handling
+            if (rb.velocity.x > 0.1f)
+            {
+                transform.localScale = new UnityEngine.Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else if (rb.velocity.x < -0.1f)
+            {
+                transform.localScale = new UnityEngine.Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
 
             float distance = UnityEngine.Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
             if (distance <= nextWaypointDistance)
                 currentWaypoint++;
 
-            // Direction Graphics Handling
-            if (rb.velocity.x > 0.1f)
+            gameObject.GetComponentInChildren<Animator>().SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+
+            if (finished)
             {
-                transform.localScale = new UnityEngine.Vector3(-1f * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                finished = false;
+                return TaskStatus.Success;
             }
-            else if (rb.velocity.x < -0.1f)
-            {
-                transform.localScale = new UnityEngine.Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-            }
+            else
+                return TaskStatus.Running;
         }
 
         #endregion
