@@ -41951,46 +41951,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1524628485}
     m_Modifications:
-    - target: {fileID: 6481670406189186021, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -49.56
-      objectReference: {fileID: 0}
-    - target: {fileID: 6481670406189186021, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 6481670406251714194, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -60.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 6481670406251714194, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 6481670406428179852, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -68.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 6481670406428179852, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.64
-      objectReference: {fileID: 0}
-    - target: {fileID: 6481670406832467599, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -63.42
-      objectReference: {fileID: 0}
-    - target: {fileID: 6481670406832467599, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 6481670407455193828, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -61.83
-      objectReference: {fileID: 0}
-    - target: {fileID: 6481670407455193828, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 7.29
-      objectReference: {fileID: 0}
     - target: {fileID: 6481670407713536999, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -42110,17 +42070,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1524628485}
     m_Modifications:
-    - target: {fileID: 4095932332371219757, guid: 6c2ec15b1207742a1bfa8c7dd092f101, type: 3}
-      propertyPath: m_Name
-      value: PatrolPoints
-      objectReference: {fileID: 0}
     - target: {fileID: 4095932332937945368, guid: 6c2ec15b1207742a1bfa8c7dd092f101, type: 3}
       propertyPath: m_Name
       value: CrabEnemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 4095932332937945368, guid: 6c2ec15b1207742a1bfa8c7dd092f101, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4095932332937945369, guid: 6c2ec15b1207742a1bfa8c7dd092f101, type: 3}
       propertyPath: m_RootOrder

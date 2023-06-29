@@ -134,7 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4095932332371219758}
   m_Layer: 0
-  m_Name: PatrollPoints
+  m_Name: PatrolPoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -172,6 +172,7 @@ GameObject:
   - component: {fileID: 4095932332422625202}
   - component: {fileID: 4095932332422625213}
   - component: {fileID: 4095932332422625214}
+  - component: {fileID: 1607951114}
   m_Layer: 13
   m_Name: Crab
   m_TagString: Untagged
@@ -276,11 +277,11 @@ MonoBehaviour:
       startIndex: 
       variableStartIndex: 
       JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(111.01873,-80.18942)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(-0.6374283,147.842834)"},"ID":1,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":0},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(0,130)"},"ID":2,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-95.9798,249.228882)"},"ID":3,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.CheckDistanceToPlayer","NodeData":{"Offset":"(-149.8275,143.45575)"},"ID":4,"Name":"Check
-        Distance To Player","Instant":true,"SinglerangeToStartChaseX":10,"SinglerangeToStartChaseY":10},{"Type":"BehaviorDesigner.Runtime.Tasks.GroundPatrol","NodeData":{"Offset":"(42.48042,142.378784)"},"ID":5,"Name":"Ground
-        Patrol","Instant":true,"Transform[]targetedPoints":[0,1,2,3],"BooleanshouldChooseRandomly":true,"BooleanshouldChasePlayer":false,"Singlespeed":300,"BooleanfinishOnHit":false,"BooleanfinishOnDuration":false,"SinglefinishOnDurationTime":0,"BooleanjumpEnabled":true,"SinglejumpMaxHeightActivation":0.8,"SinglejumpForce":0.3,"SinglejumpCheckOffset":0.1}]},{"Type":"BehaviorDesigner.Runtime.Tasks.RandomSequence","NodeData":{"Offset":"(155.809753,246.177)"},"ID":6,"Name":"Random
+        Distance To Player","Instant":true,"SinglerangeToStartChaseX":10,"SinglerangeToStartChaseY":10},{"Type":"BehaviorDesigner.Runtime.Tasks.GroundPatrol","NodeData":{"Offset":"(64.69609,139.024109)"},"ID":5,"Name":"Ground
+        Patrol","Instant":true,"Transform[]targetedPoints":[],"BooleanshouldChooseRandomly":false,"BooleanshouldChasePlayer":true,"Singlespeed":300,"BooleanfinishOnHit":false,"BooleanfinishOnDuration":false,"SinglefinishOnDurationTime":0,"BooleanjumpEnabled":true,"SinglejumpMaxHeightActivation":0.8,"SinglejumpForce":200,"SinglejumpCheckOffset":0.1}]},{"Type":"BehaviorDesigner.Runtime.Tasks.RandomSequence","NodeData":{"Offset":"(155.809753,246.177)"},"ID":6,"Name":"Random
         Sequence","Instant":true,"Int32seed":0,"BooleanuseSeed":false,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(61.4984131,144.2315)"},"ID":7,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.StopMovement","NodeData":{"Offset":"(-3.79707718,148.69)"},"ID":8,"Name":"Stop
         Movement","Instant":true},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(110.340607,153.482361)"},"ID":9,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.GroundPatrol","NodeData":{"Offset":"(190.728577,141.785034)"},"ID":10,"Name":"Ground
-        Patrol","Instant":true,"Transform[]targetedPoints":[4,5,6,7],"BooleanshouldChooseRandomly":false,"BooleanshouldChasePlayer":true,"Singlespeed":300,"BooleanfinishOnHit":false,"BooleanfinishOnDuration":false,"SinglefinishOnDurationTime":0,"BooleanjumpEnabled":false,"SinglejumpMaxHeightActivation":0.8,"SinglejumpForce":200,"SinglejumpCheckOffset":0.1}]}]}]}}'
+        Patrol","Instant":true,"Transform[]targetedPoints":[0,1,2,3],"BooleanshouldChooseRandomly":true,"BooleanshouldChasePlayer":false,"Singlespeed":300,"BooleanfinishOnHit":true,"BooleanfinishOnDuration":false,"SinglefinishOnDurationTime":0,"BooleanjumpEnabled":true,"SinglejumpMaxHeightActivation":0.8,"SinglejumpForce":200,"SinglejumpCheckOffset":0.1}]}]}]}}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 
@@ -291,15 +292,39 @@ MonoBehaviour:
         - {fileID: 4095932331478990972}
         - {fileID: 4095932331790233597}
         - {fileID: 4095932331488251246}
-        - {fileID: 4095932331344315714}
-        - {fileID: 4095932331478990972}
-        - {fileID: 4095932331790233597}
-        - {fileID: 4095932331488251246}
         byteData: 
         byteDataArray: 
       Version: 1.7.7
   gizmoViewMode: 2
   showBehaviorDesignerGizmo: 1
+--- !u!114 &1607951114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4095932332422625201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
 --- !u!1 &4095932332937945368
 GameObject:
   m_ObjectHideFlags: 0

@@ -86,6 +86,8 @@ namespace BehaviorDesigner.Runtime.Tasks
             if (finishOnDurationTimer < 0f)
                 finished = true;
 
+            gameObject.GetComponentInChildren<Animator>().SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+
             if (finished)
             {
                 finished = false;
@@ -124,6 +126,7 @@ namespace BehaviorDesigner.Runtime.Tasks
                 if (direction.y > jumpMaxHeightActivation)
                 {
                     rb.AddForce(UnityEngine.Vector2.up * jumpForce);
+                    gameObject.GetComponentInChildren<Animator>().SetTrigger("Jump");
                 }
             }
 
@@ -132,6 +135,16 @@ namespace BehaviorDesigner.Runtime.Tasks
             float distance = UnityEngine.Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
             if (distance <= nextWaypointDistance)
                 currentWaypoint++;
+
+            // Direction Graphics Handling
+            if (rb.velocity.x > 0.1f)
+            {
+                transform.localScale = new UnityEngine.Vector3(-1f * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else if (rb.velocity.x < -0.1f)
+            {
+                transform.localScale = new UnityEngine.Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
         }
 
         #endregion
