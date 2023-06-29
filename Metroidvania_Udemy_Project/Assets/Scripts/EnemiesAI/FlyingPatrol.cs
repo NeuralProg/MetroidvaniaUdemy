@@ -38,7 +38,7 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         #region Basics
 
-        public override void OnStart()          // On doit pouvoir mettre plusieurs waypoints, choisir si le mob les atteindra dans l'ordre ou au hasard, on doit pouvoir activer une option pour chasser le player et on doit pouvoir définir si return finished quand point atteind
+        public override void OnStart()          
         {
             rb = GetComponent<Rigidbody2D>();
             seeker = GetComponent<Seeker>();

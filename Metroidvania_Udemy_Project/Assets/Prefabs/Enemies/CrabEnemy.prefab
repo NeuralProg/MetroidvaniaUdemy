@@ -124,37 +124,6 @@ Transform:
   m_Father: {fileID: 4095932332371219758}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4095932332124835707
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4095932332124835652}
-  m_Layer: 0
-  m_Name: FrontCheck
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4095932332124835652
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4095932332124835707}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.13, y: -0.18, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4095932332422625212}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4095932332371219757
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,7 +192,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4095932332965769654}
-  - {fileID: 4095932332124835652}
   m_Father: {fileID: 4095932332937945369}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -256,7 +224,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 100
-  m_LinearDrag: 0
+  m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 3
   m_Material: {fileID: 6200000, guid: 62845c05637034811abdeda8aeb57197, type: 2}
@@ -309,29 +277,24 @@ MonoBehaviour:
       variableStartIndex: 
       JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(111.01873,-80.18942)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(-0.6374283,147.842834)"},"ID":1,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":0},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(0,130)"},"ID":2,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-95.9798,249.228882)"},"ID":3,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.CheckDistanceToPlayer","NodeData":{"Offset":"(-149.8275,143.45575)"},"ID":4,"Name":"Check
         Distance To Player","Instant":true,"SinglerangeToStartChaseX":10,"SinglerangeToStartChaseY":10},{"Type":"BehaviorDesigner.Runtime.Tasks.GroundPatrol","NodeData":{"Offset":"(42.48042,142.378784)"},"ID":5,"Name":"Ground
-        Patrol","Instant":true,"SinglemoveSpeed":4,"BooleanshouldChasePlayer":true,"SinglejumpHeight":10,"TransformfrontPoint":0,"SinglecircleRadius":0.5,"LayerMasklayersToCheckForJump":2112}]},{"Type":"BehaviorDesigner.Runtime.Tasks.RandomSequence","NodeData":{"Offset":"(155.809753,246.177)"},"ID":6,"Name":"Random
+        Patrol","Instant":true,"Transform[]targetedPoints":[0,1,2,3],"BooleanshouldChooseRandomly":true,"BooleanshouldChasePlayer":false,"Singlespeed":300,"BooleanfinishOnHit":false,"BooleanfinishOnDuration":false,"SinglefinishOnDurationTime":0,"BooleanjumpEnabled":true,"SinglejumpMaxHeightActivation":0.8,"SinglejumpForce":0.3,"SinglejumpCheckOffset":0.1}]},{"Type":"BehaviorDesigner.Runtime.Tasks.RandomSequence","NodeData":{"Offset":"(155.809753,246.177)"},"ID":6,"Name":"Random
         Sequence","Instant":true,"Int32seed":0,"BooleanuseSeed":false,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(61.4984131,144.2315)"},"ID":7,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.StopMovement","NodeData":{"Offset":"(-3.79707718,148.69)"},"ID":8,"Name":"Stop
         Movement","Instant":true},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(110.340607,153.482361)"},"ID":9,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.GroundPatrol","NodeData":{"Offset":"(190.728577,141.785034)"},"ID":10,"Name":"Ground
-        Patrol","Instant":true,"TransformtargetedPoint":1,"SinglemoveSpeed":2,"BooleanshouldChasePlayer":false,"SinglejumpHeight":7,"TransformfrontPoint":2,"SinglecircleRadius":0.5,"LayerMasklayersToCheckForJump":2112},{"Type":"BehaviorDesigner.Runtime.Tasks.GroundPatrol","NodeData":{"Offset":"(320,140)"},"ID":11,"Name":"Ground
-        Patrol","Instant":true,"TransformtargetedPoint":3,"SinglemoveSpeed":2,"BooleanshouldChasePlayer":false,"SinglejumpHeight":7,"TransformfrontPoint":4,"SinglecircleRadius":0.5,"LayerMasklayersToCheckForJump":2112},{"Type":"BehaviorDesigner.Runtime.Tasks.GroundPatrol","NodeData":{"Offset":"(448.652039,137.927551)"},"ID":12,"Name":"Ground
-        Patrol","Instant":true,"TransformtargetedPoint":5,"SinglemoveSpeed":2,"BooleanshouldChasePlayer":false,"SinglejumpHeight":7,"TransformfrontPoint":6,"SinglecircleRadius":0.5,"LayerMasklayersToCheckForJump":2112},{"Type":"BehaviorDesigner.Runtime.Tasks.GroundPatrol","NodeData":{"Offset":"(570,140)"},"ID":13,"Name":"Ground
-        Patrol","Instant":true,"TransformtargetedPoint":7,"SinglemoveSpeed":2,"BooleanshouldChasePlayer":false,"SinglejumpHeight":7,"TransformfrontPoint":8,"SinglecircleRadius":0.5,"LayerMasklayersToCheckForJump":2112},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(696.6774,138.198029)"},"ID":14,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.StopMovement","NodeData":{"Offset":"(-55.42865,143.419342)"},"ID":15,"Name":"Stop
-        Movement","Instant":true},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(61.535862,143.419342)"},"ID":16,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]}]}]}]}}'
+        Patrol","Instant":true,"Transform[]targetedPoints":[4,5,6,7],"BooleanshouldChooseRandomly":false,"BooleanshouldChasePlayer":true,"Singlespeed":300,"BooleanfinishOnHit":false,"BooleanfinishOnDuration":false,"SinglefinishOnDurationTime":0,"BooleanjumpEnabled":false,"SinglejumpMaxHeightActivation":0.8,"SinglejumpForce":200,"SinglejumpCheckOffset":0.1}]}]}]}}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 
         startIndex: 
         dataPosition: 
         unityObjects:
-        - {fileID: 4095932332124835652}
         - {fileID: 4095932331344315714}
-        - {fileID: 4095932332124835652}
         - {fileID: 4095932331478990972}
-        - {fileID: 4095932332124835652}
         - {fileID: 4095932331790233597}
-        - {fileID: 4095932332124835652}
         - {fileID: 4095932331488251246}
-        - {fileID: 4095932332124835652}
+        - {fileID: 4095932331344315714}
+        - {fileID: 4095932331478990972}
+        - {fileID: 4095932331790233597}
+        - {fileID: 4095932331488251246}
         byteData: 
         byteDataArray: 
       Version: 1.7.7
