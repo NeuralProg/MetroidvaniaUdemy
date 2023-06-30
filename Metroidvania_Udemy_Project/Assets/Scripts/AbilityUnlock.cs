@@ -16,13 +16,15 @@ public class AbilityUnlock : MonoBehaviour
     [SerializeField] private TMP_Text abilityNameRef;
     [SerializeField] private TMP_Text abilityInfoRef;
     [SerializeField] private GameObject abilityImageRef;
+    private bool taken = false;
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(LayerMask.LayerToName(collision.gameObject.layer) == "Player")
+        if(LayerMask.LayerToName(collision.gameObject.layer) == "Player" && !taken)
         {
             PlayerAbilityTracker player = collision.GetComponentInParent<PlayerAbilityTracker>();
+            taken = true;
 
             if (unlockDoubleJumpAbility)
                 player.doubleJumpAbility = true;
