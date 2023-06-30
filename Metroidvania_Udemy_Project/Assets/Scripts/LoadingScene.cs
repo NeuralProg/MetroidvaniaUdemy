@@ -7,6 +7,8 @@ using System.Collections;
 public class LoadingScene : MonoBehaviour
 {
     public static LoadingScene instance;
+    private int sceneBuildIndex;
+    [HideInInspector] public bool loaded = false;
 
     private void Awake()
     {
@@ -21,20 +23,34 @@ public class LoadingScene : MonoBehaviour
         }
     }
 
-    public void SceneLoad(int sceneBuildIndex)
+    public void SceneLoad(int sceneBuildIdx)
     {
         // Loading screen
-        print("test");
-        StartCoroutine(LoadSceneAsynchronously(sceneBuildIndex));
+        loaded = false;
+        sceneBuildIndex = sceneBuildIdx;
+        StartCoroutine(SceneTransitionDelay());
     }
 
-    private IEnumerator LoadSceneAsynchronously(int sceneBuildIndex)
+    private IEnumerator SceneTransitionDelay()
+    {
+        UIController.instance.SceneTransitionFadeIn();
+        yield return new WaitForSeconds(UIController.instance.fadeSpeed);
+        StartCoroutine(LoadSceneAsynchronously());
+    }
+
+    private IEnumerator LoadSceneAsynchronously()
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneBuildIndex); // Load scene in the background
         while (!operation.isDone)   // Wait till scene is fully loaded
         {
-            print(operation.progress);
+            //print(operation.progress);
             yield return null;
+        }
+
+        if(operation.isDone)
+        {
+            UIController.instance.SceneTransitionFadeOut();
+            loaded = true;
         }
     }
 }

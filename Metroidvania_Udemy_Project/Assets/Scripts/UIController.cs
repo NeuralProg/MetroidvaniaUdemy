@@ -16,7 +16,7 @@ public class UIController : MonoBehaviour
 
     [Header("Scenes transition")]
     public Image fadeScreen;
-    private float fadeSpeed = 2f;
+    [HideInInspector] public float fadeSpeed = 1f;
     private bool fadingToBlack, fadingFromBlack;
 
     public static UIController instance;
@@ -71,5 +71,36 @@ public class UIController : MonoBehaviour
         {
             healsAmount.color = Color.white;
         }
+
+        // Scene transition
+        if (fadingToBlack)
+        {
+            fadeScreen.color = new Color(fadeScreen.color.r, fadeScreen.color.g, fadeScreen.color.b, Mathf.MoveTowards(fadeScreen.color.a, 1f, fadeSpeed * Time.deltaTime));
+
+            if(fadeScreen.color.a == 1f)
+            {
+                fadingToBlack = false;
+            }
+        }
+        else if(fadingFromBlack)
+        {
+            fadeScreen.color = new Color(fadeScreen.color.r, fadeScreen.color.g, fadeScreen.color.b, Mathf.MoveTowards(fadeScreen.color.a, 0f, fadeSpeed * Time.deltaTime));
+
+            if (fadeScreen.color.a == 0f)
+            {
+                fadingFromBlack = false;
+            }
+        }
+    }
+
+    public void SceneTransitionFadeIn()
+    {
+        fadingToBlack = true;
+        fadingFromBlack = false;
+    }
+    public void SceneTransitionFadeOut()
+    {
+        fadingToBlack = false;
+        fadingFromBlack = true;
     }
 }

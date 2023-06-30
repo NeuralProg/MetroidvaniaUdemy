@@ -50,18 +50,31 @@ public class RespawnController : MonoBehaviour
         yield return new WaitForSeconds(respawnDelay);
 
         LoadingScene.instance.SceneLoad(respawnScene);
-        player = PlayerController.instance;
+        StartCoroutine(DoWhenLoaded());
+    }
 
-        player.transform.position = respawnPoint;
-        player.transform.localScale = new Vector3(respawnDirection, 1f, 1f);
-        player.gameObject.SetActive(true);
-        player.HealPlayer(PlayerController.instance.maxHealth);
-        player.currentHeals = PlayerController.instance.maxHeals;
-        player.invincibilityTimer = 2f;
+    private IEnumerator DoWhenLoaded()
+    {
+        while (!LoadingScene.instance.loaded)
+            yield return null;
 
-        yield return new WaitForSeconds(Time.deltaTime);
+        if (LoadingScene.instance.loaded)
+        {
+            LoadingScene.instance.loaded = false;
 
-        if (respawnEffect != null)
-            Instantiate(respawnEffect, PlayerController.instance.transform.position, PlayerController.instance.transform.rotation);
+            player = PlayerController.instance;
+
+            player.transform.position = respawnPoint;
+            player.transform.localScale = new Vector3(respawnDirection, 1f, 1f);
+            player.gameObject.SetActive(true);
+            player.HealPlayer(PlayerController.instance.maxHealth);
+            player.currentHeals = PlayerController.instance.maxHeals;
+            player.invincibilityTimer = 2f;
+
+            yield return new WaitForSeconds(Time.deltaTime);
+
+            if (respawnEffect != null)
+                Instantiate(respawnEffect, PlayerController.instance.transform.position, PlayerController.instance.transform.rotation);
+        }
     }
 }

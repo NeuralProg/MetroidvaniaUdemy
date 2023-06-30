@@ -36,6 +36,19 @@ public class DoorController : MonoBehaviour
         if(LayerMask.LayerToName(collision.gameObject.layer) == "Player")
         {
             LoadingScene.instance.SceneLoad(sceneToLoad);
+            StartCoroutine(DoWhenLoaded());
+        }
+    }
+
+    private IEnumerator DoWhenLoaded()
+    {
+        while (!LoadingScene.instance.loaded)
+            yield return null;
+
+        if (LoadingScene.instance.loaded)
+        {
+            LoadingScene.instance.loaded = false;
+
             player.transform.position = newPosition;
             player.transform.localScale = new Vector3(-transform.localScale.x, 1f, 1f);
         }
