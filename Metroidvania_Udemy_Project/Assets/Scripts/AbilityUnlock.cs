@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Important to be able to use TMPro !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+using TMPro;
 
 public class AbilityUnlock : MonoBehaviour
 {
@@ -16,16 +16,14 @@ public class AbilityUnlock : MonoBehaviour
     [SerializeField] private TMP_Text abilityNameRef;
     [SerializeField] private TMP_Text abilityInfoRef;
     [SerializeField] private GameObject abilityImageRef;
-    private bool taken = false;
-
+    private PlayerAbilityTracker player;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(LayerMask.LayerToName(collision.gameObject.layer) == "Player" && !taken)
-        {
-            PlayerAbilityTracker player = collision.GetComponentInParent<PlayerAbilityTracker>();
-            taken = true;
+        player = PlayerController.instance.GetComponent<PlayerAbilityTracker>();
 
+        if (LayerMask.LayerToName(collision.gameObject.layer) == "Player")
+        {
             if (unlockDoubleJumpAbility)
                 player.doubleJumpAbility = true;
             if (unlockDashAbility)
@@ -38,8 +36,8 @@ public class AbilityUnlock : MonoBehaviour
                 player.wallJumpAbility = true;
 
             Instantiate(pickupEffect, transform.position, transform.rotation);
-            ShowAbilityMessage();
-            StartCoroutine(StopPlayer(collision.GetComponentInParent<PlayerController>()));
+            //ShowAbilityMessage();
+            StartCoroutine(StopPlayer());
         }
     }
 
@@ -52,13 +50,13 @@ public class AbilityUnlock : MonoBehaviour
         abilityImageRef.GetComponent<Image>().preserveAspect = true;
     }
 
-    private IEnumerator StopPlayer(PlayerController plr)
+    private IEnumerator StopPlayer()
     {
-        plr.canMove = false;
+        PlayerController.instance.canMove = false;
         gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
         gameObject.GetComponent<CircleCollider2D>().radius = 0f;
-        yield return new WaitForSeconds(9f);
-        plr.canMove = true;
+        yield return new WaitForSeconds(12f);
+        PlayerController.instance.canMove = true;
         Destroy(gameObject);
     }
 }
