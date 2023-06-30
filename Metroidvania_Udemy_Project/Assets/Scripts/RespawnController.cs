@@ -8,7 +8,7 @@ public class RespawnController : MonoBehaviour
 
     public static RespawnController instance;
 
-    [HideInInspector] public string respawnScene;
+    [HideInInspector] public int respawnScene;
     [HideInInspector] public Vector3 respawnPoint;
     [HideInInspector] public float respawnDirection = 1;
     [HideInInspector] public float respawnDelay = 3f;
@@ -49,7 +49,7 @@ public class RespawnController : MonoBehaviour
 
         yield return new WaitForSeconds(respawnDelay);
 
-        SceneManager.LoadScene(respawnScene);
+        LoadingScene.instance.SceneLoad(respawnScene);
         player = PlayerController.instance;
 
         player.transform.position = respawnPoint;

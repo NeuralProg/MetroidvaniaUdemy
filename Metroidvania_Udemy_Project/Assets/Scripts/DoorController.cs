@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement; // To control scenes
 
 public class DoorController : MonoBehaviour
 {
-    [SerializeField] private string sceneToLoad;
+    [SerializeField] private int sceneToLoad;
     [SerializeField] private Vector3 newPosition;
     private float distanceToOpen = 5;
 
@@ -35,7 +35,7 @@ public class DoorController : MonoBehaviour
     {
         if(LayerMask.LayerToName(collision.gameObject.layer) == "Player")
         {
-            SceneManager.LoadScene(sceneToLoad);
+            LoadingScene.instance.SceneLoad(sceneToLoad);
             player.transform.position = newPosition;
             player.transform.localScale = new Vector3(-transform.localScale.x, 1f, 1f);
         }

@@ -19,7 +19,7 @@ public class Checkpoint : MonoBehaviour
         {
             canSave = false;
             print("CheckPoint saved !");
-            respawnController.respawnScene = SceneManager.GetActiveScene().name;
+            respawnController.respawnScene = SceneManager.GetActiveScene().buildIndex;
             respawnController.respawnPoint = transform.position;
             respawnController.respawnDirection = transform.localScale.x;
         }

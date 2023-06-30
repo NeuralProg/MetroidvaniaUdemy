@@ -14,6 +14,11 @@ public class UIController : MonoBehaviour
     [Header("Heals")]
     public TMP_Text healsAmount;
 
+    [Header("Scenes transition")]
+    public Image fadeScreen;
+    private float fadeSpeed = 2f;
+    private bool fadingToBlack, fadingFromBlack;
+
     public static UIController instance;
     private PlayerController player;
 
