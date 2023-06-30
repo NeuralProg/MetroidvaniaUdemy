@@ -996,7 +996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcc17f67d749b4323b1f3b40ed6fb52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnScene: test
+  respawnScene: 0
   respawnPoint: {x: 0, y: 0, z: 0}
   respawnDirection: 1
   respawnDelay: 3
@@ -2045,6 +2045,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 279930307}
   m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1049965353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1049965355}
+  - component: {fileID: 1049965354}
+  m_Layer: 0
+  m_Name: LoadingScreen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1049965354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049965353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe8c06082bdca48a5a9427273a6eb240, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1049965355
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049965353}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -77.59402, y: -19.31903, z: 8.668174}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1053979174
 GameObject:
@@ -42857,7 +42901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1079842508290633393, guid: 0b0013efba2b14c83aed8107f6eeb1bf, type: 3}
       propertyPath: sceneToLoad
-      value: test_1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1079842508290633394, guid: 0b0013efba2b14c83aed8107f6eeb1bf, type: 3}
       propertyPath: m_Offset.x

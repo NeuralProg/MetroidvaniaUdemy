@@ -24,6 +24,7 @@ public class LoadingScene : MonoBehaviour
     public void SceneLoad(int sceneBuildIndex)
     {
         // Loading screen
+        print("test");
         StartCoroutine(LoadSceneAsynchronously(sceneBuildIndex));
     }
 
@@ -32,6 +33,7 @@ public class LoadingScene : MonoBehaviour
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneBuildIndex); // Load scene in the background
         while (!operation.isDone)   // Wait till scene is fully loaded
         {
+            print(operation.progress);
             yield return null;
         }
     }
