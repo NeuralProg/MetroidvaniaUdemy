@@ -52,6 +52,7 @@ public class RespawnController : MonoBehaviour
         player.transform.localScale = respawnPoint.localScale;
         player.SetActive(true);
         PlayerController.instance.HealPlayer(PlayerController.instance.maxHealth);
+        PlayerController.instance.currentHeals = PlayerController.instance.maxHeals;
         PlayerController.instance.invincibilityTimer = 2f;
 
         yield return new WaitForSeconds(Time.deltaTime);

@@ -20,12 +20,16 @@ public class PlayerController : MonoBehaviour
     private float moveInput;
 
     [Header("Health")]
+    public int maxHealth = 5;
+    [HideInInspector] public int currentHealth;
+    public int maxHeals = 3;
+    [HideInInspector] public int currentHeals;
+    private float healingTime = 1f, healingTimer;
+    private float healingCooldownTime = 0.5f, healingCooldownTimer = 0f;
     private float invincibilityTime = 1.5f;
     [HideInInspector]public float invincibilityTimer;
     private float blinkOnHitTime = 0.075f;
     private float blinkOnHitTimer;
-    [HideInInspector] public int currentHealth;
-    [HideInInspector] public int maxHealth = 2;
 
     // Movements vars
     [HideInInspector] public bool canMove = true;
@@ -113,8 +117,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        maxHealth = 5; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         currentHealth = maxHealth;
+        currentHeals = maxHeals;
     }
 
     void Update()
@@ -264,7 +268,7 @@ public class PlayerController : MonoBehaviour
             shootCounter -= Time.deltaTime;
         }
 
-        if (standing.activeSelf && ballCounter >= waitToBall - 0.1f)
+        if (standing.activeSelf && ballCounter >= waitToBall && healingTimer >= healingTime)
         {
             if (!dashing && shootCounter < 0)
             {
@@ -382,9 +386,10 @@ public class PlayerController : MonoBehaviour
 
     private void CheckState()
     {
-        if (!ball.activeSelf)
+        if (!ball.activeSelf && standing.activeSelf)
         {
-            if(UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && abilities.ballAbility)     // We check if the player push the direction down
+            // Switch to ball
+            if(UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && abilities.ballAbility)    
             {
                 ballCounter -= Time.deltaTime;
 
@@ -402,8 +407,31 @@ public class PlayerController : MonoBehaviour
                 ballCounter = waitToBall;
                 anim.SetBool("SwitchingToBall", false);
             }
+
+            // Heal
+            if (healingCooldownTimer > 0)
+                healingCooldownTimer -= Time.deltaTime;
+
+            if (UserInput.instance.controls.Healing.Heal.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && currentHealth < maxHealth && currentHeals > 0 && healingCooldownTimer <= 0f) 
+            {
+                healingTimer -= Time.deltaTime;
+                if (healingTimer <= 0)            // If the player pressed the button for healingTime duration
+                {
+                    HealPlayer(1);
+                    currentHeals -= 1;
+                    healingTimer = healingTime;
+                    healingCooldownTimer = healingCooldownTime;
+                }
+
+                anim.SetBool("Healing", true);
+            }
+            else
+            {
+                healingTimer = healingTime;
+                anim.SetBool("Healing", false);
+            }
         }
-        else
+        else if(ball.activeSelf && !standing.activeSelf)
         {
             if (UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && !Physics2D.OverlapBox(aboveCheck.transform.position, new Vector2(0.85f, 1.6f), 0f, groundMask) && abilities.ballAbility)     // We check if the player push the direction down
             {
