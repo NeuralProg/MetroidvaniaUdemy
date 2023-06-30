@@ -52,7 +52,7 @@ public class AbilityUnlock : MonoBehaviour
     {
         PlayerController.instance.canMove = false;
         gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
-        gameObject.GetComponent<CircleCollider2D>().radius = 0f;
+        gameObject.GetComponent<CircleCollider2D>().enabled = false;
         yield return new WaitForSeconds(9f);
         PlayerController.instance.canMove = true;
         Destroy(gameObject);

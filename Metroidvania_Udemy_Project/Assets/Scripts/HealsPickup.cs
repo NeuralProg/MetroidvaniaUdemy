@@ -8,7 +8,7 @@ public class HealsPickup : MonoBehaviour
     [SerializeField] private bool increaseMaxHealsAmount = false;
     [SerializeField] private int increaseAmount = 1;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         PlayerController player = PlayerController.instance;
 

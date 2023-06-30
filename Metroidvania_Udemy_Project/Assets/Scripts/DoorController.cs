@@ -35,6 +35,9 @@ public class DoorController : MonoBehaviour
     {
         if(LayerMask.LayerToName(collision.gameObject.layer) == "Player")
         {
+            player = PlayerController.instance;
+            player.canMove = false;
+
             LoadingScene.instance.SceneLoad(sceneToLoad);
             StartCoroutine(DoWhenLoaded());
         }

@@ -51,6 +51,8 @@ public class LoadingScene : MonoBehaviour
         {
             UIController.instance.SceneTransitionFadeOut();
             loaded = true;
+            print("Loaded");
+            PlayerController.instance.canMove = true;
             StopAllCoroutines();
         }
     }
