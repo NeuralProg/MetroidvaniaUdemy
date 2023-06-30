@@ -43,8 +43,7 @@ public class AbilityUnlock : MonoBehaviour
 
     private void ShowAbilityMessage()
     {
-        abilityNameRef.gameObject.transform.parent.gameObject.SetActive(true);
-        GetComponent<Animator>().SetTrigger("AbilityTaken");
+        UIController.instance.GetComponent<Animator>().SetTrigger("AbilityTaken");
         abilityNameRef.text = abilityName;
         abilityInfoRef.text = abilityInfo;
         abilityImageRef.GetComponent<Image>().sprite = abilityImage;
@@ -56,7 +55,7 @@ public class AbilityUnlock : MonoBehaviour
         plr.canMove = false;
         gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
         gameObject.GetComponent<CircleCollider2D>().radius = 0f;
-        yield return new WaitForSeconds(12f);
+        yield return new WaitForSeconds(9f);
         plr.canMove = true;
         Destroy(gameObject);
     }
