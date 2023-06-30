@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     // Movements vars
     [HideInInspector] public bool canMove = true;
-    private float moveSpeed = 8;
+    [HideInInspector] public float moveSpeed = 8;
     private float jumpForce = 20;
     private bool canDoubleJump;
     private bool jumping = false;
@@ -176,26 +176,23 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (canMove)
+        // Take x value of move input
+        moveInput = UserInput.instance.moveInput.x;
+
+        // Move sideways
+        if(!wallJump)
+            rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+        else
+            rb.velocity = new Vector2((moveInput * moveSpeed / 2) + transform.localScale.x * jumpForce/2f, jumpForce / 2);
+
+        // Flip
+        if (rb.velocity.x < 0)
         {
-            // Take x value of move input
-            moveInput = UserInput.instance.moveInput.x;
-
-            // Move sideways
-            if(!wallJump)
-                rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
-            else
-                rb.velocity = new Vector2((moveInput * moveSpeed / 2) + transform.localScale.x * jumpForce/2f, jumpForce / 2);
-
-            // Flip
-            if (rb.velocity.x < 0)
-            {
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-            }
-            else if (rb.velocity.x > 0)
-            {
-                transform.localScale = Vector3.one;
-            }
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
+        else if (rb.velocity.x > 0)
+        {
+            transform.localScale = Vector3.one;
         }
     }
 

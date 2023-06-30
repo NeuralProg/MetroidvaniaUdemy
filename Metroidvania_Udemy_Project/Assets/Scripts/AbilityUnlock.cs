@@ -20,7 +20,7 @@ public class AbilityUnlock : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(LayerMask.LayerToName(collision.gameObject.layer) == "Player")
         {
             PlayerAbilityTracker player = collision.GetComponentInParent<PlayerAbilityTracker>();
 

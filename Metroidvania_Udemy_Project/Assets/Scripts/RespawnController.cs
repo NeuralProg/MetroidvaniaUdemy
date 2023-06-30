@@ -8,12 +8,14 @@ public class RespawnController : MonoBehaviour
 
     public static RespawnController instance;
 
-    public Transform respawnPoint;
+    [HideInInspector] public string respawnScene;
+    [HideInInspector] public Vector3 respawnPoint;
+    [HideInInspector] public float respawnDirection = 1;
     [HideInInspector] public float respawnDelay = 3f;
     [SerializeField] private GameObject playerDeathEffect;
     [SerializeField] private GameObject respawnEffect;
 
-    private GameObject player;
+    private PlayerController player;
 
 
     private void Awake()
@@ -31,7 +33,7 @@ public class RespawnController : MonoBehaviour
 
     void Start()
     {
-        player = PlayerController.instance.gameObject;
+        player = PlayerController.instance;
     }
 
     public void Respawn()
@@ -41,19 +43,21 @@ public class RespawnController : MonoBehaviour
 
     private IEnumerator RespawnDelay()
     {
-        player.SetActive(false);
+        player.gameObject.SetActive(false);
         if (playerDeathEffect != null)
-            Instantiate(playerDeathEffect, PlayerController.instance.transform.position, PlayerController.instance.transform.rotation);
+            Instantiate(playerDeathEffect, player.transform.position, player.transform.rotation);
 
         yield return new WaitForSeconds(respawnDelay);
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        player.transform.position = respawnPoint.position;
-        player.transform.localScale = respawnPoint.localScale;
-        player.SetActive(true);
-        PlayerController.instance.HealPlayer(PlayerController.instance.maxHealth);
-        PlayerController.instance.currentHeals = PlayerController.instance.maxHeals;
-        PlayerController.instance.invincibilityTimer = 2f;
+        SceneManager.LoadScene(respawnScene);
+        player = PlayerController.instance;
+
+        player.transform.position = respawnPoint;
+        player.transform.localScale = new Vector3(respawnDirection, 1f, 1f);
+        player.gameObject.SetActive(true);
+        player.HealPlayer(PlayerController.instance.maxHealth);
+        player.currentHeals = PlayerController.instance.maxHeals;
+        player.invincibilityTimer = 2f;
 
         yield return new WaitForSeconds(Time.deltaTime);
 
