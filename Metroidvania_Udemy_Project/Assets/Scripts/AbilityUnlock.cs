@@ -13,9 +13,6 @@ public class AbilityUnlock : MonoBehaviour
     [SerializeField] private string abilityName;
     [SerializeField] private string abilityInfo;
     [SerializeField] private Sprite abilityImage;
-    [SerializeField] private TMP_Text abilityNameRef;
-    [SerializeField] private TMP_Text abilityInfoRef;
-    [SerializeField] private GameObject abilityImageRef;
     private PlayerAbilityTracker player;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -36,7 +33,7 @@ public class AbilityUnlock : MonoBehaviour
                 player.wallJumpAbility = true;
 
             Instantiate(pickupEffect, transform.position, transform.rotation);
-            //ShowAbilityMessage();
+            ShowAbilityMessage();
             StartCoroutine(StopPlayer());
         }
     }
@@ -44,10 +41,11 @@ public class AbilityUnlock : MonoBehaviour
     private void ShowAbilityMessage()
     {
         UIController.instance.GetComponent<Animator>().SetTrigger("AbilityTaken");
-        abilityNameRef.text = abilityName;
-        abilityInfoRef.text = abilityInfo;
-        abilityImageRef.GetComponent<Image>().sprite = abilityImage;
-        abilityImageRef.GetComponent<Image>().preserveAspect = true;
+
+        GameObject.Find("AbilityName").gameObject.GetComponent<TMP_Text>().text = abilityName;
+        GameObject.Find("AbilityInfo").gameObject.GetComponent<TMP_Text>().text = abilityInfo;
+        GameObject.Find("AbilityImage").gameObject.GetComponent<Image>().sprite = abilityImage;
+        GameObject.Find("AbilityImage").gameObject.GetComponent<Image>().preserveAspect = true;
     }
 
     private IEnumerator StopPlayer()
@@ -55,7 +53,7 @@ public class AbilityUnlock : MonoBehaviour
         PlayerController.instance.canMove = false;
         gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
         gameObject.GetComponent<CircleCollider2D>().radius = 0f;
-        yield return new WaitForSeconds(12f);
+        yield return new WaitForSeconds(9f);
         PlayerController.instance.canMove = true;
         Destroy(gameObject);
     }

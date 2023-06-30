@@ -51,6 +51,7 @@ public class LoadingScene : MonoBehaviour
         {
             UIController.instance.SceneTransitionFadeOut();
             loaded = true;
+            StopAllCoroutines();
         }
     }
 }
