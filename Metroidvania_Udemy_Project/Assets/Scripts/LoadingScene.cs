@@ -63,12 +63,10 @@ public class LoadingScene : MonoBehaviour
 
                 player.transform.position = respawnPos;
                 player.transform.localScale = new Vector3(respawnDir, 1f, 1f);
-                print("changes vars");
                 loaded = false;
             }
 
             UIController.instance.SceneTransitionFadeOut();
-            print("Loaded");
             PlayerController.instance.canMove = true;
             StopAllCoroutines();
         }
