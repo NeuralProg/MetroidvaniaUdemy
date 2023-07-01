@@ -8,7 +8,12 @@ public class LoadingScene : MonoBehaviour
 {
     public static LoadingScene instance;
     private int sceneBuildIndex;
+
     [HideInInspector] public bool loaded = false;
+
+    [HideInInspector] public bool respawning = false;
+    [HideInInspector] public Vector3 respawnPos;
+    [HideInInspector] public float respawnDir = 1;
 
     private void Awake()
     {
@@ -33,6 +38,7 @@ public class LoadingScene : MonoBehaviour
 
     private IEnumerator SceneTransitionDelay()
     {
+        PlayerController.instance.canMove = false;
         UIController.instance.SceneTransitionFadeIn();
         yield return new WaitForSeconds(UIController.instance.fadeSpeed);
         StartCoroutine(LoadSceneAsynchronously());
@@ -49,8 +55,19 @@ public class LoadingScene : MonoBehaviour
 
         if(operation.isDone)
         {
-            UIController.instance.SceneTransitionFadeOut();
             loaded = true;
+
+            if (!respawning)
+            {
+                PlayerController player = PlayerController.instance;
+
+                player.transform.position = respawnPos;
+                player.transform.localScale = new Vector3(respawnDir, 1f, 1f);
+                print("changes vars");
+                loaded = false;
+            }
+
+            UIController.instance.SceneTransitionFadeOut();
             print("Loaded");
             PlayerController.instance.canMove = true;
             StopAllCoroutines();

@@ -49,6 +49,8 @@ public class RespawnController : MonoBehaviour
 
         yield return new WaitForSeconds(respawnDelay);
 
+        LoadingScene.instance.respawning = true;
+
         LoadingScene.instance.SceneLoad(respawnScene);
         StartCoroutine(DoWhenLoaded());
     }

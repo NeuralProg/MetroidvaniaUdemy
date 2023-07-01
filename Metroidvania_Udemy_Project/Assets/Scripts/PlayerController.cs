@@ -460,7 +460,7 @@ public class PlayerController : MonoBehaviour
 
     public void DamagePlayer(int damageTaken)
     {
-        if (invincibilityTimer <= 0) // Only apply damage when not invincible
+        if (invincibilityTimer <= 0 && canMove) // Only apply damage when not invincible
         {
             currentHealth -= damageTaken;
 
