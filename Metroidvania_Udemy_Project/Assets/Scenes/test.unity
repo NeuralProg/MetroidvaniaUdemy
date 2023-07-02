@@ -748,6 +748,9 @@ MonoBehaviour:
   moveSpeed: 8
   groundPoint: {fileID: 1856270025}
   aboveCheck: {fileID: 1244380772}
+  aboveCheckColisions:
+    serializedVersion: 2
+    m_Bits: 2112
   groundMask:
     serializedVersion: 2
     m_Bits: 1088

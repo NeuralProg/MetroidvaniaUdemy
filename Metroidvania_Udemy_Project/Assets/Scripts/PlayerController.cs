@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
     [Header("CollisionCheck")]
     [SerializeField] private UnityEngine.Transform groundPoint;
     [SerializeField] private UnityEngine.Transform aboveCheck;
+    [SerializeField] private LayerMask aboveCheckColisions;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private GameObject landEffect;
     private bool isOnGround;
@@ -430,7 +431,7 @@ public class PlayerController : MonoBehaviour
         }
         else if(ball.activeSelf && !standing.activeSelf)
         {
-            if (UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && !Physics2D.OverlapBox(aboveCheck.transform.position, new Vector2(0.85f, 1.6f), 0f, groundMask) && abilities.ballAbility)     // We check if the player push the direction down
+            if (UserInput.instance.controls.SwitchingState.Switch.IsPressed() && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f && !Physics2D.OverlapBox(aboveCheck.transform.position, new Vector2(0.85f, 1.6f), 0f, aboveCheckColisions) && abilities.ballAbility)     // We check if the player push the direction down
             {
                 ballCounter -= Time.deltaTime;
 
