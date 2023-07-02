@@ -684,7 +684,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 279930306}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 95.46, y: 1.5, z: 0}
+  m_LocalPosition: {x: 10.1, y: 0.9, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -698,6 +698,7 @@ Transform:
   - {fileID: 999146868}
   - {fileID: 778377713}
   - {fileID: 1192809296}
+  - {fileID: 1707318075}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -762,6 +763,7 @@ MonoBehaviour:
   shotToFire: {fileID: 3346251669571363100, guid: 9b5f1a3fa0fa34e708dcb504fa47f891, type: 3}
   shotPointFront: {fileID: 1599405214}
   shotPointTop: {fileID: 2063480973}
+  playerCenter: {fileID: 1707318075}
   dashAfterImage: {fileID: 3522250649463320645, guid: 699f8cabae2fa44f2ba23c7d2621e025, type: 3}
   afterImageColor: {r: 0.14117648, g: 0.6, b: 0.9529412, a: 0.69411767}
   standing: {fileID: 1286244993}
@@ -41656,6 +41658,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686226057}
   m_CullTransparentMesh: 1
+--- !u!1 &1707318074
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1707318075}
+  m_Layer: 8
+  m_Name: Center
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1707318075
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707318074}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.23, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 279930307}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1716942235
 GameObject:
   m_ObjectHideFlags: 0
@@ -43547,6 +43580,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1524628485}
     m_Modifications:
+    - target: {fileID: 6481670407455193827, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
+      propertyPath: knockbackVelocity
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6481670407713536999, guid: af0eebf6a5a8a4b6d989f832dcfb03bc, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -43816,6 +43853,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1524628485}
     m_Modifications:
+    - target: {fileID: 4095932332422625213, guid: 6c2ec15b1207742a1bfa8c7dd092f101, type: 3}
+      propertyPath: knockbackVelocity
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4095932332937945368, guid: 6c2ec15b1207742a1bfa8c7dd092f101, type: 3}
       propertyPath: m_Name
       value: CrabEnemy

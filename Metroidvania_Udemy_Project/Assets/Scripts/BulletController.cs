@@ -23,10 +23,12 @@ public class BulletController : Weapon
         if (LayerMask.LayerToName(other.gameObject.layer) == "Enemy" && shotByPlayer)
         {
             other.GetComponent<Enemy>().DamageEnemy(damageAmount);
+            other.GetComponent<Enemy>().Knockback(transform);
         }
         if (LayerMask.LayerToName(other.gameObject.layer) == "Player" && !shotByPlayer)
         {
             PlayerController.instance.DamagePlayer(damageAmount);
+            PlayerController.instance.Knockback(transform);
         }
         if (LayerMask.LayerToName(other.gameObject.layer) == "Destructible" && other.GetComponent<DestructiblePhases>().canBeDestroyedByShoot == true)
         {

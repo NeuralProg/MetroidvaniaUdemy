@@ -7,6 +7,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int totalHealth = 4;
     [SerializeField] private int collisionDamageAmount = 1;
     [SerializeField] private GameObject deathEffect;
+    [SerializeField] private UnityEngine.Transform enemyCenter;
+    [SerializeField] private float knockbackVelocity = 10f;
+    private float knockbackDuration = 0.2f;
+    [HideInInspector] public bool isKnockbacked = false;
 
     public void DamageEnemy(int damage)
     {
@@ -43,6 +47,22 @@ public class Enemy : MonoBehaviour
 
     private void DealDamage()
     {
-        PlayerController.instance.DamagePlayer(collisionDamageAmount);  
+        PlayerController.instance.DamagePlayer(collisionDamageAmount);
+        PlayerController.instance.Knockback(enemyCenter);
+    }
+
+
+    public void Knockback(UnityEngine.Transform t)
+    {
+        var dir = enemyCenter.position - t.position;
+
+        GetComponent<Rigidbody2D>().velocity = dir.normalized * knockbackVelocity;
+        StartCoroutine(StopKnockback());
+    }
+    private IEnumerator StopKnockback()
+    {
+        isKnockbacked = true;
+        yield return new WaitForSeconds(knockbackDuration);
+        isKnockbacked = false;
     }
 }

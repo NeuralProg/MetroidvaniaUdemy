@@ -385,6 +385,9 @@ MonoBehaviour:
   totalHealth: 3
   collisionDamageAmount: 1
   deathEffect: {fileID: 7301545412307311522, guid: 5075eb52daeb74eb8a113f6299bb4b42, type: 3}
+  enemyCenter: {fileID: 6481670406736276897}
+  knockbackVelocity: 2
+  isKnockbacked: 0
 --- !u!114 &6481670407455193824
 MonoBehaviour:
   m_ObjectHideFlags: 0

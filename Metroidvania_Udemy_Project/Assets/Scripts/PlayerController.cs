@@ -73,6 +73,12 @@ public class PlayerController : MonoBehaviour
     private float shootCounter;
     private int shootDamage = 1;
 
+    [Header("Knockback")]
+    [SerializeField] private UnityEngine.Transform playerCenter;
+    private float knockbackVelocity = 10f;
+    private float knockbackDuration = 0.2f;
+    private bool isKnockbacked = false;
+
     [Header("DashTrailEffect")]
     [SerializeField] private SpriteRenderer dashAfterImage;
     [SerializeField] private Color afterImageColor;
@@ -181,17 +187,23 @@ public class PlayerController : MonoBehaviour
         moveInput = UserInput.instance.moveInput.x;
 
         // Move sideways
-        if(!wallJump)
+        if(!wallJump && !isKnockbacked)
             rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
         else
-            rb.velocity = new Vector2((moveInput * moveSpeed / 2) + transform.localScale.x * jumpForce/2f, jumpForce / 2);
+            if(wallJump)
+                rb.velocity = new Vector2((moveInput * moveSpeed / 2) + transform.localScale.x * jumpForce/2f, jumpForce / 2);
+            if (isKnockbacked)
+            {
+                var lerpedXKnockbackVelocity = Mathf.Lerp(rb.velocity.x, 0, Time.deltaTime * 2);
+            rb.velocity = new Vector2(lerpedXKnockbackVelocity, rb.velocity.y);
+            }
 
         // Flip
-        if (rb.velocity.x < 0)
+        if (rb.velocity.x < 0 && !isKnockbacked)
         {
             transform.localScale = new Vector3(-1f, 1f, 1f);
         }
-        else if (rb.velocity.x > 0)
+        else if (rb.velocity.x > 0 && !isKnockbacked)
         {
             transform.localScale = Vector3.one;
         }
@@ -369,6 +381,20 @@ public class PlayerController : MonoBehaviour
 
 
     #region Functions
+
+    public void Knockback(UnityEngine.Transform t)
+    {
+        var dir = playerCenter.position - t.position;
+
+        rb.velocity = dir.normalized * knockbackVelocity;
+        StartCoroutine(StopKnockback());
+    }
+    private IEnumerator StopKnockback()
+    {
+        isKnockbacked = true;
+        yield return new WaitForSeconds(knockbackDuration);
+        isKnockbacked = false;
+    }
 
     private void ShowAfterImage()
     {
