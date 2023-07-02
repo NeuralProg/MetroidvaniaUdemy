@@ -19,7 +19,7 @@ TagManager:
   - Wall
   - Pickups
   - Enemy
-  - 
+  - NoCollisionWithEnemy
   - 
   - 
   - 

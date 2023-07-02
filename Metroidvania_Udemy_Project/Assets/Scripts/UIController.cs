@@ -14,6 +14,9 @@ public class UIController : MonoBehaviour
     [Header("Heals")]
     public TMP_Text healsAmount;
 
+    [Header("Coins")]
+    public TMP_Text coinsAmount;
+
     [Header("Scenes transition")]
     public Image fadeScreen;
     [HideInInspector] public float fadeSpeed = 1f;
@@ -71,6 +74,9 @@ public class UIController : MonoBehaviour
         {
             healsAmount.color = Color.white;
         }
+
+        // UI coins
+        coinsAmount.SetText("x" + player.coins);
 
         // Scene transition
         if (fadingToBlack)

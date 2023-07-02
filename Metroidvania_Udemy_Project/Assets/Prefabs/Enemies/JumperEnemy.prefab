@@ -387,6 +387,7 @@ MonoBehaviour:
   deathEffect: {fileID: 7301545412307311522, guid: 5075eb52daeb74eb8a113f6299bb4b42, type: 3}
   enemyCenter: {fileID: 6481670406736276897}
   knockbackVelocity: 2
+  coin: {fileID: 7350893181714616505, guid: 045cc7311e56f6746baed1f40e8e872e, type: 3}
   isKnockbacked: 0
 --- !u!114 &6481670407455193824
 MonoBehaviour:

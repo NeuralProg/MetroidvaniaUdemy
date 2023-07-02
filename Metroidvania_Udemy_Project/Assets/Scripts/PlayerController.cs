@@ -95,6 +95,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject bombObject;
     [SerializeField] private UnityEngine.Transform bombPointFront;
     [SerializeField] private UnityEngine.Transform bombPointUp;
+
+    [Header("Coins")]
+    [HideInInspector] public int coins = 0;
     #endregion
 
 
