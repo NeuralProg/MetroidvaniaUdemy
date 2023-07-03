@@ -20,7 +20,7 @@ TagManager:
   - Pickups
   - Enemy
   - NoCollisionWithEnemy
-  - 
+  - NoCollisionWithShot
   - 
   - 
   - 

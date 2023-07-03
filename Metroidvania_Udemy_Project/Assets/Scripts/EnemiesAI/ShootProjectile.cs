@@ -8,7 +8,7 @@ namespace BehaviorDesigner.Runtime.Tasks
     public class ShootProjectile : Action
     {
         [SerializeField] private int shootDamage = 1;
-        [SerializeField] private BulletController bullet;
+        [SerializeField] private GameObject bullet;
         [SerializeField] private UnityEngine.Transform shootPoint;
         private Vector2 shootDirection;
 
@@ -24,11 +24,11 @@ namespace BehaviorDesigner.Runtime.Tasks
 
             shootDirection = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y).normalized;
 
-            BulletController shoot = Object.Instantiate(bullet, shootPoint.position, shootPoint.rotation);
-            shoot.moveDir = shootDirection;
-            shoot.damageAmount = shootDamage;
-            shoot.shotByPlayer = false;
-            shoot.bulletSpeed = 6; 
+            GameObject shoot = Object.Instantiate(bullet, shootPoint.position, shootPoint.rotation);
+            shoot.GetComponent<BulletController>().moveDir = shootDirection;
+            shoot.GetComponent<BulletController>().damageAmount = shootDamage;
+            shoot.GetComponent<BulletController>().shotByPlayer = false;
+            shoot.GetComponent<BulletController>().bulletSpeed = 6; 
 
             hasShot = true;
         }

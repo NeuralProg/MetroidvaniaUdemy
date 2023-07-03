@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
     private float wasWalledCooldown = 0.2f;
 
     [Header("Shoot")]
-    [SerializeField] private BulletController shotToFire;
+    [SerializeField] private GameObject shotToFire;
     [SerializeField] private UnityEngine.Transform shotPointFront;
     [SerializeField] private UnityEngine.Transform shotPointTop;
     private float shootCooldown = 0.2f; 
@@ -288,19 +288,19 @@ public class PlayerController : MonoBehaviour
                 // Shoot
                 if (UserInput.instance.controls.Shooting.Shoot.IsPressed() && UserInput.instance.moveInput.y > 0 && isOnGround && Mathf.Abs(rb.velocity.x) < 0.1f)
                 {
-                    BulletController shoot = Instantiate(shotToFire, shotPointTop.position, shotPointTop.rotation);
-                    shoot.moveDir = new Vector2(0f, 1f);
-                    shoot.damageAmount = shootDamage;
-                    shoot.shotByPlayer = true;
+                    GameObject shoot = Instantiate(shotToFire, shotPointTop.position, shotPointTop.rotation);
+                    shoot.GetComponent<BulletController>().moveDir = new Vector2(0f, 1f);
+                    shoot.GetComponent<BulletController>().damageAmount = shootDamage;
+                    shoot.GetComponent<BulletController>().shotByPlayer = true;
                     anim.SetTrigger("ShotFiredUp");
                     shootCounter = shootCooldown;
                 }
                 else if (UserInput.instance.controls.Shooting.Shoot.IsPressed() && shootCounter < 0)
                 {
-                    BulletController shoot = Instantiate(shotToFire, shotPointFront.position, shotPointFront.rotation);
-                    shoot.moveDir = new Vector2(transform.localScale.x, 0f);
-                    shoot.damageAmount = shootDamage;
-                    shoot.shotByPlayer = true;
+                    GameObject shoot = Instantiate(shotToFire, shotPointFront.position, shotPointFront.rotation);
+                    shoot.GetComponent<BulletController>().moveDir = new Vector2(transform.localScale.x, 0f);
+                    shoot.GetComponent<BulletController>().damageAmount = shootDamage;
+                    shoot.GetComponent<BulletController>().shotByPlayer = true;
                     anim.SetTrigger("ShotFiredFront");
                     shootCounter = shootCooldown;
                 }

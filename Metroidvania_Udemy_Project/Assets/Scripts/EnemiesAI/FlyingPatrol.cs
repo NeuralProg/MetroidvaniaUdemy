@@ -104,7 +104,7 @@ namespace BehaviorDesigner.Runtime.Tasks
             }
 
             UnityEngine.Vector2 direction = ((UnityEngine.Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-            UnityEngine.Vector2 force = direction * speed * Time.deltaTime;
+            UnityEngine.Vector2 force = direction * (speed * rb.mass) * Time.deltaTime;
 
             rb.AddForce(force);
 
