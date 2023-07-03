@@ -6,7 +6,11 @@ using UnityEngine.Scripting;
 public class Boss : Enemy
 {
     [HideInInspector] public bool detected = false;
-    [HideInInspector] public int currentStage = 0;
+
+    protected override void KillEnemy()
+    {
+        Destroy(gameObject);
+    }
 
 
 }

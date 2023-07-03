@@ -158,7 +158,7 @@ public class PlayerController : MonoBehaviour
             anim = animBall;
 
         // Check Ground
-        isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.25f, groundMask);
+        isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.4f, groundMask);
         if (isOnGround) // Update The coyote time
         {
             coyoteTimer = coyoteTime;

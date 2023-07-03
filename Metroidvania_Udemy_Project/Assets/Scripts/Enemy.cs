@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] protected int totalHealth = 4;
+    public int health = 4;
     [SerializeField] protected int collisionDamageAmount = 1;
     [SerializeField] protected GameObject deathEffect;
     [SerializeField] protected UnityEngine.Transform enemyCenter;
@@ -15,9 +15,9 @@ public class Enemy : MonoBehaviour
 
     public void DamageEnemy(int damage)
     {
-        totalHealth -= damage;
+        health -= damage;
         gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.red;
-        if (totalHealth <= 0)
+        if (health <= 0)
         {
             if(deathEffect != null)
                 Instantiate(deathEffect, transform.position, transform.rotation);

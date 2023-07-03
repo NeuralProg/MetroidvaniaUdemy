@@ -10,6 +10,8 @@ namespace BehaviorDesigner.Runtime.Tasks
 { 
     public class FlyingPatrol : Action
     {
+        [SerializeField] private SpriteRenderer sr;
+
         [Header("Target Info")]
         [SerializeField] private UnityEngine.Transform[] targetedPoints;
         private UnityEngine.Transform targetedPoint;
@@ -68,6 +70,14 @@ namespace BehaviorDesigner.Runtime.Tasks
             {
                 UpdatePath();
                 updateTimer = updateDelay;
+            }
+
+            if (sr != null)
+            {
+                if (rb.velocity.x > 0.1f)                           // Turn
+                    sr.transform.localScale = UnityEngine.Vector3.one;
+                else if (rb.velocity.x < -0.1f)
+                    sr.transform.localScale = new UnityEngine.Vector3(-1f, 1f, 1f);
             }
 
             if (shouldChasePlayer)
