@@ -16,7 +16,6 @@ public class Boss : Enemy
         {
             GetComponent<Animator>().SetBool("Invisible", true);
         }
-        print(PlayerController.instance.transform.position.x - transform.position.x);
     }
 
     public void Spawn(float duration)
