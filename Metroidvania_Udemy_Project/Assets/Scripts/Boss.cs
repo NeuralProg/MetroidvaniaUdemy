@@ -8,6 +8,7 @@ public class Boss : Enemy
     [SerializeField] private bool hideWhenNotDetected = true;
     [HideInInspector] public bool detected = false;
     [HideInInspector] public bool canTakeDamage = false;
+    [SerializeField] private GhostClone clone;
     private bool hasSpawned = false;
 
     private void Update()
@@ -31,14 +32,25 @@ public class Boss : Enemy
         detected = true;
     }
 
-    protected override void KillEnemy()
-    {
-        Destroy(gameObject);
-    }
-
     public override void DamageEnemy(int damage)
     {
-        if(canTakeDamage)
+        if (canTakeDamage)
+        {
             base.DamageEnemy(damage);
+
+            if(clone != null)
+                clone.BlinkEffect();
+        }
+    }
+
+    protected override void KillEnemy()
+    {
+        StartCoroutine(KillBoss());
+    }
+    private IEnumerator KillBoss()
+    {
+        GetComponent<Animator>().SetTrigger("Dead");
+        yield return new WaitForSeconds(0.35f / 0.6f);
+        Destroy(gameObject);
     }
 }

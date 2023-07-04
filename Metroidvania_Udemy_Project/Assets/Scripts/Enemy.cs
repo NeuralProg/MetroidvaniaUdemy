@@ -16,7 +16,9 @@ public class Enemy : MonoBehaviour
     public virtual void DamageEnemy(int damage)
     {
         health -= damage;
+
         gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.red;
+
         if (health <= 0)
         {
             if(deathEffect != null)
