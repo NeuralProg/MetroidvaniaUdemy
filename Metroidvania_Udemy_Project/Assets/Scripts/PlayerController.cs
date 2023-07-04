@@ -393,7 +393,7 @@ public class PlayerController : MonoBehaviour
     {
         var dir = playerCenter.position - t.position;
 
-        rb.velocity = dir.normalized * knockbackVelocity;
+        rb.velocity = dir.normalized * new Vector2(knockbackVelocity, knockbackVelocity * 2);
         StartCoroutine(StopKnockback());
     }
     private IEnumerator StopKnockback()
