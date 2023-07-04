@@ -12,17 +12,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected GameObject coin;
     protected float knockbackDuration = 0.2f;
     [HideInInspector] public bool isKnockbacked = false;
+    private bool dead = false;
 
-    public virtual void DamageEnemy(int damage)
+
+    protected virtual void Update()
     {
-        health -= damage;
-
-        gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.red;
-
-        if (health <= 0)
+        if (health <= 0 && !dead)
         {
-            if(deathEffect != null)
-                Instantiate(deathEffect, transform.position, transform.rotation);
+            dead = true;
 
             for (int i = 0; i < Random.Range(0, 5); i++)
             {
@@ -34,11 +31,21 @@ public class Enemy : MonoBehaviour
             }
             KillEnemy();
         }
+    }
+
+    public virtual void DamageEnemy(int damage)
+    {
+        health -= damage;
+
+        gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.red;
         StartCoroutine(HitBlinkDelay());
     }
 
     protected virtual void KillEnemy()
     {
+        if (deathEffect != null)
+            Instantiate(deathEffect, transform.position, transform.rotation);
+
         Destroy(gameObject.transform.parent.gameObject);
     }
 

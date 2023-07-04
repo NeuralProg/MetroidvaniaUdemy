@@ -7,9 +7,11 @@ public class GhostClone : Boss
 {
     [SerializeField] Boss mainBoss;
 
-    private void Update()
+    protected override void Update()
     {
         health = mainBoss.health - 2;
+
+        base.Update();
     }
 
     public override void DamageEnemy(int damage)
@@ -30,17 +32,6 @@ public class GhostClone : Boss
     {
         yield return new WaitForSeconds(0.1f);
         GetComponent<SpriteRenderer>().color = Color.white;
-    }
-
-    protected override void KillEnemy()
-    {
-        StartCoroutine(KillBoss());
-    }
-    private IEnumerator KillBoss()
-    {
-        GetComponent<Animator>().SetTrigger("Dead");
-        yield return new WaitForSeconds(0.35f / 0.6f);
-        Destroy(gameObject);
     }
 
     private void OnEnable()

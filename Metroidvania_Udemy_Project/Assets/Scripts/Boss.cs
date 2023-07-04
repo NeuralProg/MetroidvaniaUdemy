@@ -11,8 +11,10 @@ public class Boss : Enemy
     [SerializeField] private GhostClone clone;
     private bool hasSpawned = false;
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (!detected && hideWhenNotDetected && !hasSpawned)
         {
             GetComponent<Animator>().SetBool("Invisible", true);
@@ -38,7 +40,7 @@ public class Boss : Enemy
         {
             base.DamageEnemy(damage);
 
-            if(clone != null)
+            if(clone != null && clone.gameObject.activeSelf)
                 clone.BlinkEffect();
         }
     }
@@ -51,6 +53,10 @@ public class Boss : Enemy
     {
         GetComponent<Animator>().SetTrigger("Dead");
         yield return new WaitForSeconds(0.35f / 0.6f);
+
+        if (deathEffect != null)
+            Instantiate(deathEffect, transform.position, transform.rotation);
+
         Destroy(gameObject);
     }
 }
