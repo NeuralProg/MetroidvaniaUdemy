@@ -109,4 +109,20 @@ public class UIController : MonoBehaviour
         fadingToBlack = false;
         fadingFromBlack = true;
     }
+
+    public void Cinematic(float duration)
+    {
+        StartCoroutine(CinematicMode(duration));
+    }
+
+    private IEnumerator CinematicMode(float duration)
+    {
+        GetComponent<Animator>().SetBool("Cinematic", true);
+        player.canMove = false;
+        player.rb.velocity = Vector2.zero;
+        yield return new WaitForSeconds(duration);
+        GetComponent<Animator>().SetBool("Cinematic", false);
+        yield return new WaitForSeconds(0.25f / 1);
+        player.canMove = true;
+    }
 }

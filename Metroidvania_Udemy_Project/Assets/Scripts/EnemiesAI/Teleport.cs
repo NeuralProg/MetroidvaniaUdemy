@@ -11,6 +11,7 @@ namespace BehaviorDesigner.Runtime.Tasks
     {
         [SerializeField] private bool teleportNearPlayer = true;
         [SerializeField] private UnityEngine.Transform[] teleportPoints;
+        [SerializeField] private float teleportTime = 2f;
 
         private UnityEngine.Transform newTeleportPoint;
         private float bestDistanceToPlayer;
@@ -22,7 +23,9 @@ namespace BehaviorDesigner.Runtime.Tasks
         {
             anim = GetComponent<Animator>();
 
-            if(teleportNearPlayer)
+            teleported = false;
+
+            if (teleportNearPlayer)
             {
                 newTeleportPoint = teleportPoints[0];
                 bestDistanceToPlayer = Vector3.Distance(teleportPoints[0].position, PlayerController.instance.transform.position);
@@ -45,7 +48,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         }
         private IEnumerator TeleportDelay()
         {
-            yield return new WaitForSeconds(Random.Range(3, 7) / 2);
+            yield return new WaitForSeconds(teleportTime);
             transform.position = newTeleportPoint.position;
             transform.localScale = new Vector3((PlayerController.instance.transform.position.x - transform.position.x) / Mathf.Abs(PlayerController.instance.transform.position.x - transform.position.x), 1f, 1f);
             anim.SetBool("Invisible", false);

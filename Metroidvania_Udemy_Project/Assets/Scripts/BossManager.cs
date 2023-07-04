@@ -8,21 +8,26 @@ public class BossManager : MonoBehaviour
     [SerializeField] GameObject[] gates;
     [SerializeField] UnityEngine.Transform camPoint;
     [SerializeField] GameObject boss;
+    [SerializeField] float cinematicTime = 5f;
     private CameraController levelCam;
+    private bool entered = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Player" && !boss.GetComponent<Boss>().detected)
         {
-            boss.GetComponent<Boss>().detected = true;
-
             foreach (GameObject gate in gates)
             {
                 gate.SetActive(true);
-
-                levelCam = FindObjectOfType<CameraController>();
-                levelCam.enabled = false;
             }
+
+            entered = true;
+
+            levelCam = FindObjectOfType<CameraController>();
+            levelCam.enabled = false;
+
+            UIController.instance.Cinematic(cinematicTime);
+            boss.GetComponent<Boss>().Spawn(cinematicTime);
         }
     }
 
@@ -30,8 +35,10 @@ public class BossManager : MonoBehaviour
     {
         if (boss != null)
         {
-            if (boss.GetComponent<Boss>().detected)
+            if (entered)
+            {
                 levelCam.transform.position = Vector3.MoveTowards(levelCam.transform.position, camPoint.position, 30f * Time.deltaTime);
+            }
         }
         else
         {

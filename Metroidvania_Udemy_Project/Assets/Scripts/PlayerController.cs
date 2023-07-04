@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject shotToFire;
     [SerializeField] private UnityEngine.Transform shotPointFront;
     [SerializeField] private UnityEngine.Transform shotPointTop;
-    private float shootCooldown = 0.2f; 
+    private float shootCooldown = 0.4f; 
     private float shootCounter;
     private int shootDamage = 1;
 
@@ -158,7 +158,11 @@ public class PlayerController : MonoBehaviour
             anim = animBall;
 
         // Check Ground
-        isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.4f, groundMask);
+        if(standing.activeSelf)
+            isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.4f, groundMask);
+        else if (ball.activeSelf)
+            isOnGround = Physics2D.OverlapCircle(groundPoint.position, 0.275f, groundMask);
+
         if (isOnGround) // Update The coyote time
         {
             coyoteTimer = coyoteTime;

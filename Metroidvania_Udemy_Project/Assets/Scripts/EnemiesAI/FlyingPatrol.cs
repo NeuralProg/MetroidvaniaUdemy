@@ -31,7 +31,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         private Path path;
         private int currentWaypoint = 0;
 
-        private float updateDelay = 0.5f;
+        [SerializeField] private float updateDelay = 0.5f;
         private float updateTimer;
 
         private Rigidbody2D rb;

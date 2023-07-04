@@ -8,12 +8,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected int collisionDamageAmount = 1;
     [SerializeField] protected GameObject deathEffect;
     [SerializeField] protected UnityEngine.Transform enemyCenter;
-    [SerializeField] protected float knockbackVelocity = 10f;
+    public float knockbackVelocity = 10f;
     [SerializeField] protected GameObject coin;
     protected float knockbackDuration = 0.2f;
     [HideInInspector] public bool isKnockbacked = false;
 
-    public void DamageEnemy(int damage)
+    public virtual void DamageEnemy(int damage)
     {
         health -= damage;
         gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.red;
@@ -67,12 +67,15 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void Knockback(UnityEngine.Transform t)
+    public virtual void Knockback(UnityEngine.Transform t)
     {
-        var dir = enemyCenter.position - t.position;
+        if (knockbackVelocity > 0)
+        {
+            var dir = enemyCenter.position - t.position;
 
-        GetComponent<Rigidbody2D>().velocity = dir.normalized * knockbackVelocity;
-        StartCoroutine(StopKnockback());
+            GetComponent<Rigidbody2D>().velocity = dir.normalized * knockbackVelocity;
+            StartCoroutine(StopKnockback());
+        }
     }
     protected IEnumerator StopKnockback()
     {
