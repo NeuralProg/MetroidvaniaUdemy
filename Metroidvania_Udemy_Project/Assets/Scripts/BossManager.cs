@@ -28,6 +28,7 @@ public class BossManager : MonoBehaviour
 
             UIController.instance.Cinematic(cinematicTime);
             boss.GetComponent<Boss>().Spawn(cinematicTime);
+            AudioManager.instance.PlayBossMusic();
         }
     }
 
@@ -49,6 +50,7 @@ public class BossManager : MonoBehaviour
     private IEnumerator DestroyDelay()
     {
         yield return new WaitForSeconds(2f);
+        AudioManager.instance.PlayLevelMusic();
         Destroy(gameObject);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BombController : Weapon
 {
     private float timeToExplode = 1f;
-    private int damage = 1;
+    private int damage = 2;
     private float blastRange = 1.5f;
     private float blastPower = 15f;
     [SerializeField] private LayerMask whatIsDestructible;

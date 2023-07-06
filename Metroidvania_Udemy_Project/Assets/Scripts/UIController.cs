@@ -154,7 +154,21 @@ public class UIController : MonoBehaviour
 
     public void PauseUnpause()
     {
-        pauseMenu.SetActive(!pauseMenu.activeSelf); // Set pause or set unpause
+        if (!pauseMenu.activeSelf)
+        {
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0f;
+            if (PlayerController.instance != null)
+                PlayerController.instance.canMove = false;
+        }
+        else
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+            if (PlayerController.instance != null)
+                PlayerController.instance.canMove = true;
+        }
+
     }
 
     public void GoMainMenu()
