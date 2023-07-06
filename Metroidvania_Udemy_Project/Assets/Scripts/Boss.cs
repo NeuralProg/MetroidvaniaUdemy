@@ -40,7 +40,9 @@ public class Boss : Enemy
         {
             base.DamageEnemy(damage);
 
-            if(clone != null && clone.gameObject.activeSelf)
+            AudioManager.instance.PlaySFX(1);
+
+            if (clone != null && clone.gameObject.activeSelf)
                 clone.BlinkEffect();
         }
     }
@@ -51,6 +53,7 @@ public class Boss : Enemy
     }
     private IEnumerator KillBoss()
     {
+        AudioManager.instance.PlaySFX(0);
         GetComponent<Animator>().SetTrigger("Dead");
         yield return new WaitForSeconds(0.35f / 0.6f);
 

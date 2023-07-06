@@ -173,6 +173,7 @@ public class UIController : MonoBehaviour
 
     public void GoMainMenu()
     {
+        Time.timeScale = 1f;
         LoadingScene.instance.SceneLoad(0);
         pauseMenu.SetActive(false);
         loadingMainMenu = true;

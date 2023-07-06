@@ -227,11 +227,16 @@ public class PlayerController : MonoBehaviour
                 {
                     rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                     jumping = true;
+
+                    AudioManager.instance.PlayAdjustedSFX(12);
                 }
                 else if (UserInput.instance.controls.Jumping.Jump.WasPressedThisFrame() && coyoteTimer < 0f && canDoubleJump && abilities.doubleJumpAbility)
                 {
                     rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                     anim.SetTrigger("DoubleJump");
+
+                    AudioManager.instance.PlayAdjustedSFX(9);
+
                     canDoubleJump = false;
                     jumping = true;
                 }
@@ -298,6 +303,8 @@ public class PlayerController : MonoBehaviour
                     shoot.GetComponent<BulletController>().shotByPlayer = true;
                     anim.SetTrigger("ShotFiredUp");
                     shootCounter = shootCooldown;
+
+                    AudioManager.instance.PlayAdjustedSFX(14);
                 }
                 else if (UserInput.instance.controls.Shooting.Shoot.IsPressed() && shootCounter < 0)
                 {
@@ -307,6 +314,8 @@ public class PlayerController : MonoBehaviour
                     shoot.GetComponent<BulletController>().shotByPlayer = true;
                     anim.SetTrigger("ShotFiredFront");
                     shootCounter = shootCooldown;
+
+                    AudioManager.instance.PlayAdjustedSFX(14);
                 }
             }
         }
@@ -316,11 +325,15 @@ public class PlayerController : MonoBehaviour
             {
                 Instantiate(bombObject, bombPointUp.position, bombPointUp.rotation);
                 shootCounter = shootCooldown * 2;
+
+                AudioManager.instance.PlayAdjustedSFX(13);
             }
             else if (shootCounter < 0 &&ball.activeSelf && UserInput.instance.controls.Shooting.Shoot.IsPressed() && abilities.bombAbility)
             {
                 Instantiate(bombObject, bombPointFront.position, bombPointFront.rotation);
                 shootCounter = shootCooldown * 2;
+
+                AudioManager.instance.PlayAdjustedSFX(13);
             }
         }
     }
@@ -335,6 +348,9 @@ public class PlayerController : MonoBehaviour
             dashReset = false;
             canDash = false;
             rb.gravityScale = 0f;
+
+            AudioManager.instance.PlayAdjustedSFX(7);
+
             ShowAfterImage();
         }
 
@@ -429,6 +445,8 @@ public class PlayerController : MonoBehaviour
                     ball.SetActive(true);
                     standing.SetActive(false);
                     ballCounter = waitToBall;
+
+                    AudioManager.instance.PlaySFX(6);
                 }
 
                 anim.SetBool("SwitchingToBall", true);
@@ -473,6 +491,8 @@ public class PlayerController : MonoBehaviour
                     ball.SetActive(false);
                     standing.SetActive(true);
                     ballCounter = waitToBall;
+
+                    AudioManager.instance.PlaySFX(10);
                 }
 
                 anim.SetBool("SwitchingToStand", true);
@@ -502,6 +522,8 @@ public class PlayerController : MonoBehaviour
 
             if (currentHealth <= 0)
             {
+                AudioManager.instance.PlaySFX(8);
+
                 currentHealth = 0; // To prevent being under 0 HP (because we can't display -2 for example in the lifebar)
 
                 foreach (Image heart in UIController.instance.hearts)
@@ -518,6 +540,8 @@ public class PlayerController : MonoBehaviour
             {
                 invincibilityTimer = invincibilityTime;
                 blinkOnHitTimer = blinkOnHitTime;
+
+                AudioManager.instance.PlaySFX(11);
             }
         }
     }

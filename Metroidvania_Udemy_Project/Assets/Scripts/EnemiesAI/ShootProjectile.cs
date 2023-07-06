@@ -28,7 +28,9 @@ namespace BehaviorDesigner.Runtime.Tasks
             shoot.GetComponent<BulletController>().moveDir = shootDirection;
             shoot.GetComponent<BulletController>().damageAmount = shootDamage;
             shoot.GetComponent<BulletController>().shotByPlayer = false;
-            shoot.GetComponent<BulletController>().bulletSpeed = 6; 
+            shoot.GetComponent<BulletController>().bulletSpeed = 6;
+
+            AudioManager.instance.PlayAdjustedSFX(2);
 
             hasShot = true;
         }

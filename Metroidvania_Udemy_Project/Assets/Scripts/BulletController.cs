@@ -41,7 +41,7 @@ public class BulletController : Weapon
             {
                 Instantiate(impactEffect, transform.position, Quaternion.identity);
             }
-
+            AudioManager.instance.PlayAdjustedSFX(3);
             Destroy(gameObject);
         }
     }

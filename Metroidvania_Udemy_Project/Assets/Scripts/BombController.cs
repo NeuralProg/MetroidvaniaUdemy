@@ -30,6 +30,8 @@ public class BombController : Weapon
                 Instantiate(explosion, new Vector3(transform.position.x, transform.position.y + 1.15f, transform.position.z), transform.rotation);
             }
 
+            AudioManager.instance.PlayAdjustedSFX(4);
+
             Collider2D[] objectsToDamage = Physics2D.OverlapCircleAll(new Vector3(transform.position.x, transform.position.y + 1.15f, transform.position.z), blastRange, whatIsDestructible);
         
             if(objectsToDamage.Length > 0)

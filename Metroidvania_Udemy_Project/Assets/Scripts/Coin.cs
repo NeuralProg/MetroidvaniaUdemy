@@ -15,6 +15,8 @@ public class Coin : MonoBehaviour
             if (pickupEffect != null)
                 Instantiate(pickupEffect, transform.position, transform.rotation) ;
 
+            AudioManager.instance.PlayAdjustedSFX(5);
+
             Destroy(gameObject);
         }
     }

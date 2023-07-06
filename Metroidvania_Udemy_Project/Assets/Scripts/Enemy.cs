@@ -46,6 +46,8 @@ public class Enemy : MonoBehaviour
         if (deathEffect != null)
             Instantiate(deathEffect, transform.position, transform.rotation);
 
+        AudioManager.instance.PlaySFX(4);
+
         Destroy(gameObject.transform.parent.gameObject);
     }
 
