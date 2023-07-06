@@ -22,6 +22,12 @@ public class UIController : MonoBehaviour
     [HideInInspector] public float fadeSpeed = 1f;
     private bool fadingToBlack, fadingFromBlack;
 
+    [Header("PauseScreen")]
+    [SerializeField] private GameObject pauseMenu;
+    [HideInInspector] public bool canPause = true;
+
+    private bool loadingMainMenu = false;
+
     public static UIController instance;
     private PlayerController player;
 
@@ -81,15 +87,17 @@ public class UIController : MonoBehaviour
         // Scene transition
         if (fadingToBlack)
         {
+            canPause = false;
             fadeScreen.color = new Color(fadeScreen.color.r, fadeScreen.color.g, fadeScreen.color.b, Mathf.MoveTowards(fadeScreen.color.a, 1f, fadeSpeed * Time.deltaTime));
 
-            if(fadeScreen.color.a == 1f)
+            if (fadeScreen.color.a == 1f)
             {
                 fadingToBlack = false;
             }
         }
-        else if(fadingFromBlack)
+        else if (fadingFromBlack)
         {
+            canPause = false;
             fadeScreen.color = new Color(fadeScreen.color.r, fadeScreen.color.g, fadeScreen.color.b, Mathf.MoveTowards(fadeScreen.color.a, 0f, fadeSpeed * Time.deltaTime));
 
             if (fadeScreen.color.a == 0f)
@@ -97,10 +105,19 @@ public class UIController : MonoBehaviour
                 fadingFromBlack = false;
             }
         }
+
+
+        if (pauseMenu.activeSelf)
+            canPause = true;
+        if (UserInput.instance.controls.Pausing.Pause.WasPressedThisFrame() && canPause)
+        {
+            PauseUnpause();
+        }
     }
 
     public void SceneTransitionFadeIn()
     {
+        canPause = false;
         fadingToBlack = true;
         fadingFromBlack = false;
     }
@@ -108,6 +125,13 @@ public class UIController : MonoBehaviour
     {
         fadingToBlack = false;
         fadingFromBlack = true;
+        canPause = true;
+        if(loadingMainMenu)
+        {
+            if (PlayerController.instance != null)
+                Destroy(PlayerController.instance.gameObject);
+            Destroy(gameObject);
+        }
     }
 
     public void Cinematic(float duration)
@@ -117,6 +141,7 @@ public class UIController : MonoBehaviour
 
     private IEnumerator CinematicMode(float duration)
     {
+        canPause = false;
         GetComponent<Animator>().SetBool("Cinematic", true);
         player.canMove = false;
         player.rb.velocity = Vector2.zero;
@@ -124,5 +149,18 @@ public class UIController : MonoBehaviour
         GetComponent<Animator>().SetBool("Cinematic", false);
         yield return new WaitForSeconds(0.25f / 1);
         player.canMove = true;
+        canPause = true;
+    }
+
+    public void PauseUnpause()
+    {
+        pauseMenu.SetActive(!pauseMenu.activeSelf); // Set pause or set unpause
+    }
+
+    public void GoMainMenu()
+    {
+        LoadingScene.instance.SceneLoad(0);
+        pauseMenu.SetActive(false);
+        loadingMainMenu = true;
     }
 }

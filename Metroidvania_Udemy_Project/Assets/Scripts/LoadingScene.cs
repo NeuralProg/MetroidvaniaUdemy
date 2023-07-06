@@ -38,9 +38,13 @@ public class LoadingScene : MonoBehaviour
 
     private IEnumerator SceneTransitionDelay()
     {
-        PlayerController.instance.canMove = false;
-        UIController.instance.SceneTransitionFadeIn();
-        yield return new WaitForSeconds(UIController.instance.fadeSpeed);
+        if(PlayerController.instance != null)
+            PlayerController.instance.canMove = false;
+        if (UIController.instance != null)
+        {
+            UIController.instance.SceneTransitionFadeIn();
+            yield return new WaitForSeconds(UIController.instance.fadeSpeed);
+        }
         StartCoroutine(LoadSceneAsynchronously());
     }
 

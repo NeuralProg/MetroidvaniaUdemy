@@ -476,6 +476,45 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Pausing"",
+            ""id"": ""b17f43b1-1724-4edd-86ac-c506caa3df92"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a662f070-df28-4e2f-bc47-b956ce8fa722"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""bffe6615-40e7-46be-bd48-d31954d4d050"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""73c82118-91a5-4855-9245-b37997d9a3cc"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -509,6 +548,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Healing
         m_Healing = asset.FindActionMap("Healing", throwIfNotFound: true);
         m_Healing_Heal = m_Healing.FindAction("Heal", throwIfNotFound: true);
+        // Pausing
+        m_Pausing = asset.FindActionMap("Pausing", throwIfNotFound: true);
+        m_Pausing_Pause = m_Pausing.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -842,6 +884,52 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public HealingActions @Healing => new HealingActions(this);
+
+    // Pausing
+    private readonly InputActionMap m_Pausing;
+    private List<IPausingActions> m_PausingActionsCallbackInterfaces = new List<IPausingActions>();
+    private readonly InputAction m_Pausing_Pause;
+    public struct PausingActions
+    {
+        private @Controls m_Wrapper;
+        public PausingActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_Pausing_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_Pausing; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PausingActions set) { return set.Get(); }
+        public void AddCallbacks(IPausingActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PausingActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PausingActionsCallbackInterfaces.Add(instance);
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+        }
+
+        private void UnregisterCallbacks(IPausingActions instance)
+        {
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+        }
+
+        public void RemoveCallbacks(IPausingActions instance)
+        {
+            if (m_Wrapper.m_PausingActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPausingActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PausingActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PausingActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PausingActions @Pausing => new PausingActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -883,5 +971,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IHealingActions
     {
         void OnHeal(InputAction.CallbackContext context);
+    }
+    public interface IPausingActions
+    {
+        void OnPause(InputAction.CallbackContext context);
     }
 }
