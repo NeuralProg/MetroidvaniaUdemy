@@ -12,6 +12,7 @@ public class BossExit : MonoBehaviour
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Player" && boss == null)
         {
             FindObjectOfType<CameraController>().enabled = true;
+            AudioManager.instance.PlayLevelMusic();
             Destroy(gameObject.transform.parent.gameObject);
         }
     }

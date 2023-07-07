@@ -38,6 +38,7 @@ public class UIController : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            canPause = true;
         }
         else
         {
@@ -48,6 +49,8 @@ public class UIController : MonoBehaviour
     void Start()
     {
         player = PlayerController.instance;
+
+        canPause = true;
     }
 
     void Update()
@@ -87,7 +90,6 @@ public class UIController : MonoBehaviour
         // Scene transition
         if (fadingToBlack)
         {
-            canPause = false;
             fadeScreen.color = new Color(fadeScreen.color.r, fadeScreen.color.g, fadeScreen.color.b, Mathf.MoveTowards(fadeScreen.color.a, 1f, fadeSpeed * Time.deltaTime));
 
             if (fadeScreen.color.a == 1f)
@@ -97,7 +99,6 @@ public class UIController : MonoBehaviour
         }
         else if (fadingFromBlack)
         {
-            canPause = false;
             fadeScreen.color = new Color(fadeScreen.color.r, fadeScreen.color.g, fadeScreen.color.b, Mathf.MoveTowards(fadeScreen.color.a, 0f, fadeSpeed * Time.deltaTime));
 
             if (fadeScreen.color.a == 0f)
@@ -106,7 +107,7 @@ public class UIController : MonoBehaviour
             }
         }
 
-
+        // Pause
         if (pauseMenu.activeSelf)
             canPause = true;
         if (UserInput.instance.controls.Pausing.Pause.WasPressedThisFrame() && canPause)

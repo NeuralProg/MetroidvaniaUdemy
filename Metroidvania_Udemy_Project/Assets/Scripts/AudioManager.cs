@@ -40,7 +40,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayBossMusic()
     {
-        music[1].Play();
+        music[1].Stop();
         music[0].Play();
         music[2].Stop();
     }

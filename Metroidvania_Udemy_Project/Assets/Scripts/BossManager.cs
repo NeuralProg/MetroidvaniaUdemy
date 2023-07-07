@@ -50,7 +50,7 @@ public class BossManager : MonoBehaviour
     private IEnumerator DestroyDelay()
     {
         yield return new WaitForSeconds(2f);
-        AudioManager.instance.PlayLevelMusic();
+        
         Destroy(gameObject);
     }
 }

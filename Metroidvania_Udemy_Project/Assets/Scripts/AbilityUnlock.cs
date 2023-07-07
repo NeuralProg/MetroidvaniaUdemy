@@ -51,10 +51,12 @@ public class AbilityUnlock : MonoBehaviour
     private IEnumerator StopPlayer()
     {
         PlayerController.instance.canMove = false;
+        UIController.instance.canPause = false;
         gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
         yield return new WaitForSeconds(9f);
         PlayerController.instance.canMove = true;
+        UIController.instance.canPause = true;
         Destroy(gameObject);
     }
 }
