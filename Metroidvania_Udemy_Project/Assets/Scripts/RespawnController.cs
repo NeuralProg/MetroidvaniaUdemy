@@ -55,6 +55,14 @@ public class RespawnController : MonoBehaviour
         StartCoroutine(DoWhenLoaded());
     }
 
+    public void RespawnInstant()
+    {
+        LoadingScene.instance.respawning = true;
+
+        LoadingScene.instance.SceneLoad(respawnScene);
+        StartCoroutine(DoWhenLoaded());
+    }
+
     private IEnumerator DoWhenLoaded()
     {
         while (!LoadingScene.instance.loaded)

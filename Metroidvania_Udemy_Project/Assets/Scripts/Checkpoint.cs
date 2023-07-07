@@ -18,10 +18,16 @@ public class Checkpoint : MonoBehaviour
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Player" && (UserInput.instance.moveInput.y >= 0.9f && Mathf.Abs(UserInput.instance.moveInput.x) < 0.1f) && canSave)
         {
             canSave = false;
-            print("CheckPoint saved !");
+
             respawnController.respawnScene = SceneManager.GetActiveScene().buildIndex;
             respawnController.respawnPoint = transform.position;
             respawnController.respawnDirection = transform.localScale.x;
+
+            PlayerPrefs.SetInt("SavedLevel", respawnController.respawnScene); // Save
+            PlayerPrefs.SetFloat("SavedPositionX", respawnController.respawnPoint.x);
+            PlayerPrefs.SetFloat("SavedPositionY", respawnController.respawnPoint.y);
+            PlayerPrefs.SetFloat("SavedPositionZ", respawnController.respawnPoint.z);
+            PlayerPrefs.SetFloat("SavedDirection", respawnController.respawnDirection);
         }
     }
 
