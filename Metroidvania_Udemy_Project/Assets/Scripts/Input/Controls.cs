@@ -428,7 +428,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""474b5390-f97c-4bbb-a7cd-adb4beccef80"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -515,6 +515,45 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Map"",
+            ""id"": ""f8b21c97-74d0-4390-9fc6-250cbb51d0a8"",
+            ""actions"": [
+                {
+                    ""name"": ""Map"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""43db8e38-e7cf-432b-84f9-d09704ba9697"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d373f2cc-4e19-43fe-9a5a-7c92a90cfec9"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Map"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39fb5910-6be7-4625-9be3-2bc669d337fe"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Map"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -551,6 +590,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Pausing
         m_Pausing = asset.FindActionMap("Pausing", throwIfNotFound: true);
         m_Pausing_Pause = m_Pausing.FindAction("Pause", throwIfNotFound: true);
+        // Map
+        m_Map = asset.FindActionMap("Map", throwIfNotFound: true);
+        m_Map_Map = m_Map.FindAction("Map", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -930,6 +972,52 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public PausingActions @Pausing => new PausingActions(this);
+
+    // Map
+    private readonly InputActionMap m_Map;
+    private List<IMapActions> m_MapActionsCallbackInterfaces = new List<IMapActions>();
+    private readonly InputAction m_Map_Map;
+    public struct MapActions
+    {
+        private @Controls m_Wrapper;
+        public MapActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Map => m_Wrapper.m_Map_Map;
+        public InputActionMap Get() { return m_Wrapper.m_Map; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MapActions set) { return set.Get(); }
+        public void AddCallbacks(IMapActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MapActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MapActionsCallbackInterfaces.Add(instance);
+            @Map.started += instance.OnMap;
+            @Map.performed += instance.OnMap;
+            @Map.canceled += instance.OnMap;
+        }
+
+        private void UnregisterCallbacks(IMapActions instance)
+        {
+            @Map.started -= instance.OnMap;
+            @Map.performed -= instance.OnMap;
+            @Map.canceled -= instance.OnMap;
+        }
+
+        public void RemoveCallbacks(IMapActions instance)
+        {
+            if (m_Wrapper.m_MapActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMapActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MapActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MapActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MapActions @Map => new MapActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -975,5 +1063,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IPausingActions
     {
         void OnPause(InputAction.CallbackContext context);
+    }
+    public interface IMapActions
+    {
+        void OnMap(InputAction.CallbackContext context);
     }
 }

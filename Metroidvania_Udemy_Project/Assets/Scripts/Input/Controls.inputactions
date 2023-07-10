@@ -406,7 +406,7 @@
                 {
                     "name": "",
                     "id": "474b5390-f97c-4bbb-a7cd-adb4beccef80",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -489,6 +489,45 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Map",
+            "id": "f8b21c97-74d0-4390-9fc6-250cbb51d0a8",
+            "actions": [
+                {
+                    "name": "Map",
+                    "type": "PassThrough",
+                    "id": "43db8e38-e7cf-432b-84f9-d09704ba9697",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d373f2cc-4e19-43fe-9a5a-7c92a90cfec9",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39fb5910-6be7-4625-9be3-2bc669d337fe",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Map",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

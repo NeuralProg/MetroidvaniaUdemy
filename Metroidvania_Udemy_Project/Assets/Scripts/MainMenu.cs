@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour
         if (PlayerPrefs.HasKey("SavedLevel"))
             continueButton.SetActive(true);
 
+        Destroy(MapController.instance.gameObject);
         AudioManager.instance.PlayMainMenuMusic();
     }
 
@@ -29,7 +30,9 @@ public class MainMenu : MonoBehaviour
 
         PlayerPrefs.DeleteAll();
 
-        LoadingScene.instance.SceneLoad(2);
+        LoadingScene.instance.respawnPos = new Vector3(14.6f, 1f, 0);
+        LoadingScene.instance.respawnDir = -1f;
+        LoadingScene.instance.SceneLoad(1);
     }
 
     public void QuitGame()

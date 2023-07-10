@@ -26,6 +26,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     [HideInInspector] public bool canPause = true;
 
+    [Header("Map")]
+    public GameObject mapMenu;
+
     private bool loadingMainMenu = false;
 
     public static UIController instance;
@@ -71,11 +74,11 @@ public class UIController : MonoBehaviour
 
         // UI heals
         healsAmount.SetText("x" + player.currentHeals);
-        if(player.currentHeals <= 0)
+        if (player.currentHeals <= 0)
         {
             healsAmount.color = new Color32(200, 200, 200, 255);
         }
-        else if(player.currentHeals >= player.maxHeals)
+        else if (player.currentHeals >= player.maxHeals)
         {
             healsAmount.color = new Color32(0, 226, 8, 255);
         }
@@ -113,6 +116,25 @@ public class UIController : MonoBehaviour
         if (UserInput.instance.controls.Pausing.Pause.WasPressedThisFrame() && canPause)
         {
             PauseUnpause();
+        }
+
+        // Map
+        if (UserInput.instance.controls.Map.Map.WasPressedThisFrame() && canPause && !pauseMenu.activeSelf)
+        {
+            if (!mapMenu.activeSelf)
+            {
+                mapMenu.SetActive(true);
+                Time.timeScale = 0f;
+                if (PlayerController.instance != null)
+                    PlayerController.instance.canMove = false;
+            }
+            else
+            {
+                mapMenu.SetActive(false);
+                Time.timeScale = 1f;
+                if (PlayerController.instance != null)
+                    PlayerController.instance.canMove = true;
+            }
         }
     }
 
