@@ -9,8 +9,20 @@ public class BossManager : MonoBehaviour
     [SerializeField] UnityEngine.Transform camPoint;
     [SerializeField] GameObject boss;
     [SerializeField] float cinematicTime = 5f;
+
+    [SerializeField] string bossRef;
+
     private CameraController levelCam;
     private bool entered = false;
+
+    private void Awake()
+    {
+        if (PlayerPrefs.HasKey(bossRef))
+        {
+            if (PlayerPrefs.GetInt(bossRef) == 1)
+                Destroy(gameObject.transform.parent.gameObject);
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -43,6 +55,7 @@ public class BossManager : MonoBehaviour
         }
         else
         {
+            PlayerPrefs.SetInt(bossRef, 1);
             StartCoroutine(DestroyDelay());
         }
     }

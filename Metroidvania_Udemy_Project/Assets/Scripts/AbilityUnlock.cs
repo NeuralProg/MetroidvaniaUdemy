@@ -22,15 +22,30 @@ public class AbilityUnlock : MonoBehaviour
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Player")
         {
             if (unlockDoubleJumpAbility)
+            {
                 player.doubleJumpAbility = true;
+                PlayerPrefs.SetInt("PlayerDoubleJump", 1);
+            }
             if (unlockDashAbility)
+            {
                 player.dashAbility = true;
+                PlayerPrefs.SetInt("PlayerDash", 1);
+            }
             if (unlockBallAbility)
+            {
                 player.ballAbility = true;
+                PlayerPrefs.SetInt("PlayerBall", 1);
+            }
             if (unlockBombAbility)
+            {
                 player.bombAbility = true;
+                PlayerPrefs.SetInt("PlayerBomb", 1);
+            }
             if (unlockWallJumpAbility)
+            {
                 player.wallJumpAbility = true;
+                PlayerPrefs.SetInt("PlayerWallJump", 1);
+            }
 
             Instantiate(pickupEffect, transform.position, transform.rotation);
             ShowAbilityMessage();

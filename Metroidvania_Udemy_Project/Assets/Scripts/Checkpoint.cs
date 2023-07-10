@@ -28,9 +28,30 @@ public class Checkpoint : MonoBehaviour
             PlayerPrefs.SetFloat("SavedPositionY", respawnController.respawnPoint.y);
             PlayerPrefs.SetFloat("SavedPositionZ", respawnController.respawnPoint.z);
             PlayerPrefs.SetFloat("SavedDirection", respawnController.respawnDirection);
+
+            if(PlayerController.instance.gameObject.GetComponent<PlayerAbilityTracker>().doubleJumpAbility)
+                PlayerPrefs.SetInt("PlayerDoubleJump", 1);
+            else
+                PlayerPrefs.SetInt("PlayerDoubleJump", 0);
+            if (PlayerController.instance.gameObject.GetComponent<PlayerAbilityTracker>().dashAbility)
+                PlayerPrefs.SetInt("PlayerDash", 1);
+            else
+                PlayerPrefs.SetInt("PlayerDash", 0);
+            if (PlayerController.instance.gameObject.GetComponent<PlayerAbilityTracker>().ballAbility)
+                PlayerPrefs.SetInt("PlayerBall", 1);
+            else
+                PlayerPrefs.SetInt("PlayerBall", 0);
+            if (PlayerController.instance.gameObject.GetComponent<PlayerAbilityTracker>().bombAbility)
+                PlayerPrefs.SetInt("PlayerBomb", 1);
+            else
+                PlayerPrefs.SetInt("PlayerBomb", 0);
+            if (PlayerController.instance.gameObject.GetComponent<PlayerAbilityTracker>().wallJumpAbility)
+                PlayerPrefs.SetInt("PlayerWallJump", 1);
+            else
+                PlayerPrefs.SetInt("PlayerWallJump", 0);
         }
     }
-
+   
     private void OnTriggerExit2D(Collider2D collision)
     {
         canSave = true;

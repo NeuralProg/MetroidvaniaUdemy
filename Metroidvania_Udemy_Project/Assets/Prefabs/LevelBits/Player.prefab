@@ -940,8 +940,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doubleJumpAbility: 0
   dashAbility: 0
-  ballAbility: 1
-  bombAbility: 1
+  ballAbility: 0
+  bombAbility: 0
   wallJumpAbility: 0
 --- !u!114 &5080608597586360963
 MonoBehaviour:
